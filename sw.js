@@ -1,1 +1,60 @@
-const CACHE='relay-3-team-hub-v1';const SHELL=['./','./index.html','./manifest.json','./icon.svg'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{if(new URL(e.request.url).origin!==location.origin)return;e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(x=>{let c=x.clone();caches.open(CACHE).then(k=>k.put(e.request,c));return x}).catch(()=>caches.match('./index.html'))))});
+const CACHE_NAME = "relay3-team-hub-v2";
+
+self.addEventListener("install", event => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", event => {
+  const request = event.request;
+
+  if (request.method !== "GET") return;
+
+  const url = new URL(request.url);
+
+  /*
+    Never cache HTML.
+    This prevents GitHub Pages from showing an old dashboard.
+  */
+  if (
+    request.mode === "navigate" ||
+    url.pathname.endsWith(".html") ||
+    url.pathname === "/" ||
+    url.pathname.endsWith("/")
+  ) {
+    event.respondWith(
+      fetch(request, { cache: "no-store" })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  /*
+    Other static files can use network first,
+    then cache as fallback.
+  */
+  event.respondWith(
+    fetch(request)
+      .then(response => {
+        const copy = response.clone();
+
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(request, copy);
+        });
+
+        return response;
+      })
+      .catch(() => caches.match(request))
+  );
+});
