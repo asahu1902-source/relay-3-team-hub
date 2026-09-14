@@ -2096,7 +2096,7 @@ let pendingDeleteRow =
    JSONP
 ===================================================== */
 
-function jsonp(
+function productionJSONP(
   url,
   callbackName
 ) {
@@ -2175,7 +2175,7 @@ function loadDashboardData() {
   showLoadingState();
 
 
-  jsonp(
+  productionJSONP(
 
     SCRIPT_URL +
     "?action=getDashboardData",
@@ -3687,7 +3687,7 @@ function saveSettingsData() {
     };
 
 
-  jsonp(
+  productionJSONP(
 
     SCRIPT_URL +
 
@@ -4021,7 +4021,7 @@ function submitProductionEntry() {
   }
 
 
-  jsonp(
+  productionJSONP(
 
     url,
 
@@ -4346,7 +4346,7 @@ function performDeleteRow(
     };
 
 
-  jsonp(
+  productionJSONP(
 
     SCRIPT_URL +
 
@@ -4510,7 +4510,7 @@ function performDeleteAll() {
     };
 
 
-  jsonp(
+  productionJSONP(
 
     SCRIPT_URL +
 
