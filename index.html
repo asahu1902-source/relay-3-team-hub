@@ -361,6 +361,8 @@ textarea.field{min-height:100px;resize:vertical}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+.bootProgress{display:flex;align-items:center;gap:10px;margin:10px 0;padding:9px 10px;border:1px solid #23506b;border-radius:11px;background:#071a28}.bootProgress img{width:34px;height:34px;border-radius:8px}.bootProgressBody{flex:1;text-align:left}.bootProgressText{font-size:11px;color:#9bdfff;margin-bottom:6px}.bootProgressTrack{height:5px;background:#17384b;border-radius:99px;overflow:hidden}.bootProgressTrack>div{height:100%;width:12%;background:linear-gradient(90deg,#0b8cff,#19d3ff);border-radius:99px;transition:width .35s ease}.bootProgress.hidden{display:none}
+
 @media(max-width:800px){
  .modules{grid-template-columns:repeat(2,1fr)}
  .kpis{grid-template-columns:repeat(2,1fr)}
@@ -379,12 +381,7 @@ textarea.field{min-height:100px;resize:vertical}
 
 <body>
 
-<div id="loading">
- <div class="loader">
-  <div class="spinner"></div>
-  <div id="loadingText">Loading...</div>
- </div>
-</div>
+<div id="loading" aria-hidden="true"></div>
 
 <!-- LOGIN -->
 <section id="loginPage">
@@ -394,8 +391,17 @@ textarea.field{min-height:100px;resize:vertical}
   <p>Teamwork • Duty • Progress</p>
 
   <select id="operatorSelect" class="field">
-   <option value="">Loading operators...</option>
+   <option value="">Select Operator</option>
+   <option value="Guest">Guest</option>
   </select>
+
+  <div id="bootProgress" class="bootProgress hidden">
+   <img src="./icon-192.png" alt="">
+   <div class="bootProgressBody">
+    <div class="bootProgressText" id="loadingText">Connecting to Team Hub...</div>
+    <div class="bootProgressTrack"><div id="bootProgressBar"></div></div>
+   </div>
+  </div>
 
   <button class="primary" onclick="hubLogin()">ENTER TEAM HUB</button>
 
@@ -737,9 +743,26 @@ let chatTimer=null;
 
 function $(id){return document.getElementById(id)}
 
-function loading(show,text="Loading..."){
- $("loadingText").textContent=text;
- $("loading").style.display=show?"flex":"none";
+function loading(show,text="Connecting to Team Hub..."){
+ const box=$("bootProgress");
+ const label=$("loadingText");
+ const bar=$("bootProgressBar");
+ if(box) box.classList.toggle("hidden",!show);
+ if(label) label.textContent=text;
+ if(bar){
+  bar.style.width=show?"18%":"100%";
+  if(show){
+   clearInterval(window.bootProgressTimer);
+   let pct=18;
+   window.bootProgressTimer=setInterval(()=>{
+    pct=Math.min(88,pct+7);
+    bar.style.width=pct+"%";
+   },500);
+  }else{
+   clearInterval(window.bootProgressTimer);
+   bar.style.width="100%";
+  }
+ }
 }
 
 function esc(v){
@@ -768,8 +791,8 @@ function jsonp(url,params={}){
 
   const timer=setTimeout(()=>{
    clean();
-   reject(new Error("Server timeout"));
-  },15000);
+   reject(new Error("Unable to connect to Team Hub. Please check the Apps Script Web App deployment."));
+  },45000);
 
   window[cb]=data=>{
    clean();
@@ -790,47 +813,29 @@ function jsonp(url,params={}){
 
 async function bootHub(){
  loading(true,"Loading team members...");
-
  try{
-  const d=await jsonp(R3_URL,{action:"getDashboardData"});
-
-  if(!d || d.error) throw new Error(d?.error||"Unable to load data");
-
-  r3Data=d;
-
+  const d=await jsonp(R3_URL,{action:"getOperators"});
+  if(!d || d.status!=="success") throw new Error(d?.message||"Unable to load operators");
   const operators=Array.isArray(d.operators)?d.operators:[];
-
-  $("operatorSelect").innerHTML=
-   '<option value="">Select Operator</option>'+
-   operators.map(o=>{
-    const n=typeof o==="string"?o:(o?.name||"");
-    return n?`<option value="${esc(n)}">${esc(n)}</option>`:"";
-   }).join("")+
-   '<option value="Guest">Guest</option>';
-
+  const options=operators.map(o=>{
+   const n=typeof o==="string"?o:(o?.name||"");
+   return n?`<option value="${esc(n)}">${esc(n)}</option>`:"";
+  }).join("");
+  $("operatorSelect").innerHTML='<option value="">Select Operator</option>'+options+'<option value="Guest">Guest</option>';
   const saved=localStorage.getItem(HUB_KEY);
-
-  const operatorNames=operators.map(o=>typeof o==="string"?o:(o?.name||""));
-   if(saved && (operatorNames.includes(saved)||saved==="Guest")){
-   $("operatorSelect").value=saved;
-  }
-
-  loading(false);
-
+  const names=operators.map(o=>typeof o==="string"?o:(o?.name||""));
+  if(saved && (names.includes(saved)||saved==="Guest")) $("operatorSelect").value=saved;
+  loading(false,"Connected");
  }catch(e){
-  loading(false);
-  $("operatorSelect").innerHTML=
-   '<option value="">Unable to load operators</option>'+
-   '<option value="Guest">Guest</option>';
-
+  loading(false,"Connection problem");
+  $("operatorSelect").innerHTML='<option value="">Operator list unavailable</option><option value="Guest">Guest</option>';
+  $("operatorSelect").value="Guest";
   $("loginStatus").textContent=e.message;
   $("loginStatus").classList.remove("hidden");
  }
 }
-
-function hubLogin(){
+async function hubLogin(){
  const name=$("operatorSelect").value;
-
  if(!name){
   $("loginStatus").textContent="Please select an operator.";
   $("loginStatus").classList.remove("hidden");
@@ -839,11 +844,36 @@ function hubLogin(){
 
  currentUser=name;
  localStorage.setItem(HUB_KEY,name);
+ $("loginStatus").classList.add("hidden");
+ loading(true,"Loading access & team data...");
 
- applyPermissions();
- showDashboard();
+ try{
+  const d=await jsonp(R3_URL,{action:"getDashboardData"});
+  if(!d || d.status!=="success") throw new Error(d?.message||"Unable to load Team Hub data");
+  r3Data=d;
+  applyPermissions();
+  loading(false,"Connected");
+  showDashboard();
+ }catch(e){
+  loading(false,"Connection problem");
+  if(name==="Guest"){
+   r3Data={
+    guestSecurity:{
+     checkPosition:false,myDueHistory:false,monthlyReport:false,leaveEntry:false,
+     holidayList:true,shiftSchedule:true,localFestival:true,groupChat:true,productionDashboard:true
+    },
+    board:{rows:[]},dueMatrix:{},holidays:[],scheduleLookup:{},festivals:[]
+   };
+   applyPermissions();
+   showDashboard();
+   showToast("⚠️ Team data unavailable. Guest public modules are still available.");
+  }else{
+   $("loginStatus").textContent=e.message;
+   $("loginStatus").classList.remove("hidden");
+   localStorage.removeItem(HUB_KEY);
+  }
+ }
 }
-
 /* ---------- PERMISSIONS ---------- */
 
 function normal(v){
@@ -878,13 +908,13 @@ function applyPermissions(){
   leave:permissionValue(p,
    "Leave Entry","leaveEntry","leave"),
   holiday:permissionValue(p,
-   "Company Holiday","companyHoliday","holiday"),
+   "Company Holiday","companyHoliday","holiday","holidayList"),
   shift:permissionValue(p,
-   "Check Shift Schedule","checkShiftSchedule","shift"),
+   "Check Shift Schedule","checkShiftSchedule","shift","shiftSchedule"),
   festival:permissionValue(p,
    "Local Festival","localFestival","festival"),
   chat:permissionValue(p,
-   "Live Group Chat","liveGroupChat","chat"),
+   "Live Group Chat","liveGroupChat","chat","groupChat"),
   production:permissionValue(p,
    "Production Dashboard","productionDashboard","production")
  };
@@ -951,7 +981,7 @@ function showHome(){
 
 function openHubModule(m){
  if(!hasAccess(m)){
-  alert("This module is locked for your account.");
+  showToast("🔒 This module is locked for your account.");
   return;
  }
 
