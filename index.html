@@ -802,12 +802,16 @@ async function bootHub(){
 
   $("operatorSelect").innerHTML=
    '<option value="">Select Operator</option>'+
-   operators.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("")+
+   operators.map(o=>{
+    const n=typeof o==="string"?o:(o?.name||"");
+    return n?`<option value="${esc(n)}">${esc(n)}</option>`:"";
+   }).join("")+
    '<option value="Guest">Guest</option>';
 
   const saved=localStorage.getItem(HUB_KEY);
 
-  if(saved && (operators.includes(saved)||saved==="Guest")){
+  const operatorNames=operators.map(o=>typeof o==="string"?o:(o?.name||""));
+   if(saved && (operatorNames.includes(saved)||saved==="Guest")){
    $("operatorSelect").value=saved;
   }
 
@@ -847,18 +851,9 @@ function normal(v){
 }
 
 function getPermissionSource(){
- if(!r3Data)return null;
-
- if(currentUser==="Guest"){
-  return r3Data.guestPermissions ||
-         r3Data.guest ||
-         r3Data.permissions?.Guest ||
-         {};
- }
-
- return r3Data.operatorPermissions?.[currentUser] ||
-        r3Data.permissions?.[currentUser] ||
-        {};
+ if(!r3Data)return {};
+ if(currentUser==="Guest") return r3Data.guestSecurity||{};
+ return r3Data.security||{};
 }
 
 function permissionValue(source,...keys){
@@ -930,13 +925,11 @@ function showDashboard(){
 function updateHubKPIs(){
  let row=null;
 
- const board=r3Data?.board||[];
+ const boardRows=Array.isArray(r3Data?.board?.rows)?r3Data.board.rows:[];
 
- if(Array.isArray(board)){
-  row=board.find(x=>
-   normal(x.name||x.operator||x.operatorName)===normal(currentUser)
-  );
- }
+ row=boardRows.find(x=>
+  normal(x.name||x.operator||x.operatorName||x.duty)===normal(currentUser)
+ );
 
  $("kpiOperator").textContent=currentUser;
  $("kpiPosition").textContent=
@@ -1049,83 +1042,52 @@ function doLogout(){
 
 function renderPosition(){
  const body=$("positionBody");
+ const board=r3Data?.board||{};
+ const rows=Array.isArray(board.rows)?board.rows:[];
 
- const board=Array.isArray(r3Data?.board)?r3Data.board:[];
-
- if(!board.length){
-  body.innerHTML=
-   '<tr><td colspan="6">No position data available.</td></tr>';
+ if(!rows.length){
+  body.innerHTML='<tr><td colspan="6">No position data available.</td></tr>';
+  $("positionStatus").textContent="No position board data available.";
   return;
  }
 
- body.innerHTML=board.map(r=>{
-  const name=r.name||r.operator||r.operatorName||"";
-  const pos=r.position||r.pos||"—";
-  const due=r.due||r.dueDate||"—";
-  const last=r.lastDay||r.last||r.lastDate||"—";
-  const shift=r.shift||"—";
-  const status=r.status||r.availability||"—";
-
-  const cls=
-   normal(status).includes("available")?"available":
-   normal(status).includes("off")?"off":
-   normal(status).includes("leave")?"leave":"";
-
-  return `
-   <tr class="${normal(name)===normal(currentUser)?"me":""}">
-    <td>${esc(pos)}</td>
-    <td><b>${esc(name)}</b></td>
-    <td>${esc(due)}</td>
-    <td>${esc(last)}</td>
-    <td>${esc(shift)}</td>
-    <td><span class="badge ${cls}">${esc(status)}</span></td>
-   </tr>`;
+ body.innerHTML=rows.map(r=>{
+  const pos=r.pos||r.position||"—";
+  const name=r.duty||r.name||r.operator||r.operatorName||"—";
+  const isMe=normal(name)===normal(currentUser);
+  return `<tr class="${isMe?"me":""}">
+   <td>${esc(pos)}</td>
+   <td><b>${esc(name)}</b></td>
+   <td>${esc(board.availableCount||"—")}</td>
+   <td>${esc(board.standBy||"—")}</td>
+   <td>${esc(board.offDay||"—")}</td>
+   <td>${esc(board.leave||"—")}</td>
+  </tr>`;
  }).join("");
 
  $("positionStatus").textContent=
-  "Position board loaded for "+currentUser+".";
+  `${board.dateBanner||"Position board"} • Available: ${board.availableCount||0}`;
 }
 
 /* ---------- DUE HISTORY ---------- */
 
 function renderDue(){
  const body=$("dueBody");
- const matrix=r3Data?.dueMatrix;
+ const matrix=r3Data?.dueMatrix||{};
+ const me=matrix[currentUser]||matrix[Object.keys(matrix).find(k=>normal(k)===normal(currentUser))]||[];
 
- if(!matrix){
-  body.innerHTML=
-   '<tr><td colspan="5">No due history available.</td></tr>';
+ if(!Array.isArray(me)||!me.length){
+  body.innerHTML='<tr><td colspan="5">No due history found.</td></tr>';
   return;
  }
 
- let rows=[];
-
- if(Array.isArray(matrix)){
-  rows=matrix;
- }else if(typeof matrix==="object"){
-  const me=matrix[currentUser]||matrix[Object.keys(matrix).find(
-   k=>normal(k)===normal(currentUser)
-  )];
-
-  if(Array.isArray(me))rows=me;
- }
-
- body.innerHTML=rows.length?
-  rows.map(r=>{
-   if(Array.isArray(r)){
-    return `<tr>${r.slice(0,5).map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`;
-   }
-
-   return `<tr>
-    <td>${esc(r.date||r.Date||"—")}</td>
-    <td>${esc(r.position||r.Position||"—")}</td>
-    <td>${esc(r.due||r.Due||"—")}</td>
-    <td>${esc(r.shift||r.Shift||"—")}</td>
-    <td>${esc(r.status||r.Status||"—")}</td>
-   </tr>`;
-  }).join("")
-  :
-  '<tr><td colspan="5">No due history found.</td></tr>';
+ body.innerHTML=me.map(r=>`<tr>
+  <td>${esc(r.pos||"—")}</td>
+  <td>${esc(r.due??"0")}</td>
+  <td>${esc(r.lastDate||"—")}</td>
+  <td>${esc(r.lastDay||"—")}</td>
+  <td>${esc(r.lastShift||"—")}</td>
+ </tr>`).join("");
 }
 
 /* ---------- REPORT ---------- */
@@ -1170,37 +1132,20 @@ async function loadMonthlyReport(){
 
 function renderReportResult(d){
  const box=$("reportResult");
-
- if(!d){
-  box.innerHTML='<div class="status">No report returned.</div>';
-  return;
- }
-
- if(d.error){
-  box.innerHTML=
-   `<div class="status">${esc(d.error)}</div>`;
-  return;
- }
-
- let data=d.report||d.data||d;
-
- if(Array.isArray(data)){
-  box.innerHTML=`
-   <div class="tableWrap">
-    <table>
-     <tbody>
-      ${data.map(r=>{
-       if(Array.isArray(r))
-        return `<tr>${r.map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`;
-       return `<tr><td>${esc(JSON.stringify(r))}</td></tr>`;
-      }).join("")}
-     </tbody>
-    </table>
-   </div>`;
- }else{
-  box.innerHTML=
-   `<pre style="white-space:pre-wrap;color:#9ddcff">${esc(JSON.stringify(data,null,2))}</pre>`;
- }
+ if(!d){box.innerHTML='<div class="status">No report returned.</div>';return;}
+ if(d.error){box.innerHTML=`<div class="status">${esc(d.error)}</div>`;return;}
+ const attendance=Array.isArray(d.attendance)?d.attendance:[];
+ const performance=Array.isArray(d.performance)?d.performance:[];
+ const leaveDates=Array.isArray(d.leaveDates)?d.leaveDates:[];
+ const otDates=Array.isArray(d.otDates)?d.otDates:[];
+ box.innerHTML=`
+  <div class="tableWrap"><table><thead><tr><th>Attendance</th><th>Count</th></tr></thead><tbody>
+   ${attendance.map(r=>`<tr><td>${esc(r.label||"")}</td><td>${esc(r.val??0)}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="tableWrap" style="margin-top:12px"><table><thead><tr><th>Position</th><th>Times Worked</th><th>Allocation</th><th>Dates</th></tr></thead><tbody>
+   ${performance.map(r=>`<tr><td>${esc(r.position||"")}</td><td>${esc(r.timesWorked??0)}</td><td>${esc(r.allocation||"0.00%")}</td><td>${esc((r.dates||[]).join(", "))}</td></tr>`).join("")}
+  </tbody></table></div>
+  <div class="status" style="margin-top:12px"><b>Leave Dates:</b> ${esc(leaveDates.join(", ")||"None")}<br><b>OT Dates:</b> ${esc(otDates.join(", ")||"None")}</div>`;
 }
 
 /* ---------- LEAVE ---------- */
@@ -1291,33 +1236,14 @@ function prepareShift(){
 
 async function lookupShift(){
  const date=$("shiftDate").value;
-
- if(!date){
-  alert("Please select date.");
-  return;
- }
-
- const schedules=r3Data?.shiftSchedule||
-                  r3Data?.shiftSchedules||
-                  r3Data?.shift||
-                  [];
-
- let found=[];
-
- if(Array.isArray(schedules)){
-  found=schedules.filter(r=>{
-   const d=Array.isArray(r)?r[0]:
-    (r.date||r.Date||r.dayDate||"");
-   return String(d).slice(0,10)===date;
-  });
- }
-
- if(found.length){
-  $("shiftResult").innerHTML=
-   `<div class="status">${esc(JSON.stringify(found,null,2))}</div>`;
+ if(!date){alert("Please select date.");return;}
+ const wanted=String(date).split("-").reverse().join("/");
+ const map=r3Data?.scheduleLookup||{};
+ const rec=map[wanted]||null;
+ if(rec){
+  $("shiftResult").innerHTML=`<div class="status"><b>${esc(wanted)}</b><br>Day: ${esc(rec.day||"—")}<br>R3: ${esc(rec.r3||"—")}<br>R2: ${esc(rec.r2||"—")}<br>R1: ${esc(rec.r1||"—")}</div>`;
  }else{
-  $("shiftResult").innerHTML=
-   '<div class="status">No shift record found for selected date.</div>';
+  $("shiftResult").innerHTML='<div class="status">No shift record found for selected date.</div>';
  }
 }
 
