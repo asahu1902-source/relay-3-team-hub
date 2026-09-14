@@ -1,2007 +1,2320 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06101d"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon-192.png"><title>RELAY-3 TEAM HUB</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06101d">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<title>RELAY-3 TEAM HUB</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-/* =====================================================
-   BASIC
-===================================================== */
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#02070d;color:#fff;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
-* {
-
-  box-sizing:
-    border-box;
-
-  margin:0;
-
-  padding:0;
-
-  font-family:
-    Arial,
-    sans-serif;
-
+#app{
+ max-width:1200px;
+ margin:auto;
+ min-height:100vh;
+ background:linear-gradient(180deg,#06101d,#02060b);
 }
 
-
-body {
-
-  background:#000;
-
-  color:#fff;
-
-  padding:
-    10px 6px 40px;
-
-  font-size:15px;
-
+.topbar{
+ height:64px;
+ padding:8px 12px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ background:#081522;
+ border-bottom:1px solid #18334b;
+ position:sticky;
+ top:0;
+ z-index:100;
 }
 
+.logoArea{display:flex;align-items:center;gap:10px}
+.logoArea img{
+ width:46px;height:46px;border-radius:12px;
+ border:1px solid #1d8dff;
+}
+.logoText b{display:block;font-size:17px;color:#fff}
+.logoText span{font-size:11px;color:#64baff}
 
-.app {
+.profileBtn{
+ background:#102337;
+ color:#fff;
+ border:1px solid #24506f;
+ border-radius:10px;
+ padding:9px 12px;
+}
+.profileBtn small{display:block;color:#65c8ff;margin-top:2px}
 
-  width:100%;
+.profileMenu{
+ position:absolute;
+ right:10px;
+ top:58px;
+ width:210px;
+ background:#0b1826;
+ border:1px solid #28516f;
+ border-radius:12px;
+ padding:8px;
+ box-shadow:0 15px 40px #000b;
+ z-index:500;
+}
+.profileMenu button{
+ width:100%;
+ text-align:left;
+ padding:11px;
+ margin:2px 0;
+ border:0;
+ border-radius:8px;
+ background:#10283c;
+ color:#fff;
+}
+.profileMenu button:hover{background:#164665}
 
-  max-width:850px;
-
-  margin:auto;
-
+#loginPage{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ background:
+ radial-gradient(circle at 50% 20%,#123552 0,#06101d 35%,#02060b 75%);
 }
 
-
-.card {
-
-  background:#07142b;
-
-  border:
-    2px solid #00bfff;
-
-  border-radius:10px;
-
-  padding:12px;
-
-  margin-bottom:10px;
-
+.loginBox{
+ width:min(430px,100%);
+ padding:28px 22px;
+ background:#091725;
+ border:1px solid #1e5275;
+ border-radius:20px;
+ box-shadow:0 20px 70px #000b;
+ text-align:center;
 }
 
-
-.section-title {
-
-  color:#00ffff;
-
-  font-size:17px;
-
-  font-weight:900;
-
-  margin-bottom:10px;
-
+.loginBox img{
+ width:100px;height:100px;border-radius:22px;
+ margin-bottom:12px;
+ border:2px solid #148fff;
 }
 
+.loginBox h1{font-size:25px;margin-bottom:4px}
+.loginBox p{font-size:13px;color:#7fcaff;margin-bottom:22px}
 
-/* =====================================================
-   TARGET PANEL
-===================================================== */
+.field{
+ width:100%;
+ background:#07111c;
+ color:#fff;
+ border:1px solid #28516d;
+ border-radius:10px;
+ padding:13px;
+ margin-bottom:12px;
+ outline:none;
+}
+.field:focus{border-color:#16a5ff}
 
-.target-panel {
+.primary{
+ width:100%;
+ border:0;
+ border-radius:10px;
+ padding:13px;
+ color:#fff;
+ font-weight:bold;
+ background:linear-gradient(90deg,#087bd4,#00a6ff);
+ box-shadow:0 5px 18px #008dff44;
+}
+.primary:active{transform:scale(.99)}
 
-  background:#07142b;
+#mainPage{display:none}
 
-  border:
-    2px solid #00bfff;
+.hero{
+ margin:16px 12px;
+ padding:20px;
+ border:1px solid #1c4560;
+ border-radius:18px;
+ background:
+ linear-gradient(135deg,#0c2031,#07111c);
+}
+.hero h2{font-size:23px}
+.hero p{color:#7eb4d3;margin-top:5px;font-size:13px}
 
-  border-radius:10px;
+.kpis{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:10px;
+ padding:0 12px 14px;
+}
+.kpi{
+ background:#0a1825;
+ border:1px solid #1d4058;
+ border-radius:13px;
+ padding:14px;
+}
+.kpi span{display:block;font-size:11px;color:#6f9ab4}
+.kpi strong{display:block;font-size:22px;margin-top:5px}
 
-  overflow:hidden;
-
-  margin-bottom:10px;
-
+.modules{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+ padding:0 12px 25px;
+}
+.module{
+ min-height:125px;
+ padding:17px;
+ border-radius:15px;
+ background:linear-gradient(145deg,#0c1d2c,#07111b);
+ border:1px solid #21455e;
+ color:#fff;
+ text-align:left;
+ position:relative;
+ overflow:hidden;
+}
+.module:hover{border-color:#159eff;transform:translateY(-1px)}
+.module.locked{
+ opacity:.45;
+ filter:grayscale(.7);
+ cursor:not-allowed;
+}
+.module .icon{font-size:27px;margin-bottom:10px}
+.module b{display:block;font-size:15px}
+.module span{display:block;color:#739bb3;font-size:11px;margin-top:4px}
+.lock{
+ position:absolute;
+ right:12px;top:12px;
+ font-size:15px;
 }
 
+.screen{
+ padding:14px 12px 30px;
+ display:none;
+}
+.screen.active{display:block}
 
-.top-bar {
-
-  background:#0284c7;
-
-  color:#000;
-
-  display:flex;
-
-  justify-content:space-between;
-
-  padding:8px 10px;
-
-  font-size:13px;
-
-  font-weight:900;
-
+.screenHead{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:13px;
+}
+.screenHead h2{font-size:21px}
+.backBtn{
+ background:#102438;
+ color:#fff;
+ border:1px solid #2b5874;
+ border-radius:9px;
+ padding:9px 13px;
 }
 
-
-.req-box {
-
-  text-align:center;
-
-  padding:12px;
-
-  border-bottom:
-    1px solid #facc15;
-
+.card{
+ background:#091724;
+ border:1px solid #1d4058;
+ border-radius:14px;
+ padding:14px;
+ margin-bottom:12px;
 }
 
+.tableWrap{overflow:auto}
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:650px;
+}
+th,td{
+ padding:9px 8px;
+ border-bottom:1px solid #183345;
+ text-align:left;
+ font-size:12px;
+ white-space:nowrap;
+}
+th{background:#0e2435;color:#72caff}
+tr.me{background:#103c58}
+.badge{
+ display:inline-block;
+ padding:4px 8px;
+ border-radius:20px;
+ background:#12334a;
+ font-size:11px;
+}
+.available{color:#54e58a}
+.off{color:#ffb45e}
+.leave{color:#ff7777}
 
-.req-value {
-
-  color:#ffff00;
-
-  font-size:25px;
-
-  font-weight:900;
-
+.formGrid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
+.formGrid label{
+ display:block;
+ color:#79a6c1;
+ font-size:11px;
+ margin-bottom:5px;
 }
 
+textarea.field{min-height:100px;resize:vertical}
 
-.req-label {
+.chatBox{
+ height:430px;
+ overflow:auto;
+ padding:10px;
+ background:#040b12;
+ border:1px solid #17364c;
+ border-radius:12px;
+ margin-bottom:10px;
+}
+.msg{
+ margin:7px 0;
+ max-width:85%;
+ padding:9px 11px;
+ border-radius:12px;
+ background:#102438;
+}
+.msg.mine{
+ margin-left:auto;
+ background:#075986;
+}
+.msg b{font-size:11px;color:#74ceff}
+.msg p{font-size:13px;margin-top:3px}
+.msg small{display:block;color:#7993a4;font-size:9px;margin-top:3px}
 
-  color:#00ffff;
+.chatSend{display:flex;gap:8px}
+.chatSend input{margin:0}
+.chatSend button{width:110px}
 
-  font-size:11px;
-
-  font-weight:900;
-
+.status{
+ padding:10px;
+ border-radius:9px;
+ margin:8px 0;
+ font-size:12px;
+ background:#0c2635;
+ color:#86d8ff;
 }
 
-
-.kpi-grid {
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
+.modalBg{
+ position:fixed;
+ inset:0;
+ background:#000b;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:1000;
+ padding:20px;
+}
+.modalBg.show{display:flex}
+.modal{
+ width:min(380px,100%);
+ background:#0a1825;
+ border:1px solid #28546f;
+ border-radius:16px;
+ padding:20px;
+ box-shadow:0 20px 70px #000;
+}
+.modal h3{margin-bottom:8px}
+.modal p{color:#83a7ba;font-size:13px;margin-bottom:18px}
+.modalBtns{display:flex;gap:8px}
+.modalBtns button{flex:1}
+.cancel{
+ background:#172a39;
+ color:#fff;
+ border:1px solid #315067;
+ border-radius:9px;
+ padding:11px;
+}
+.danger{
+ background:#b62929;
+ color:#fff;
+ border:0;
+ border-radius:9px;
+ padding:11px;
 }
 
+#loading{
+ position:fixed;
+ inset:0;
+ background:#02070de6;
+ z-index:2000;
+ display:none;
+ align-items:center;
+ justify-content:center;
+}
+.loader{
+ padding:20px 28px;
+ border-radius:14px;
+ background:#0a1b29;
+ border:1px solid #28607f;
+ text-align:center;
+}
+.spinner{
+ width:30px;height:30px;
+ border:3px solid #23475d;
+ border-top-color:#19a7ff;
+ border-radius:50%;
+ margin:0 auto 10px;
+ animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.kpi {
+@media(max-width:800px){
+ .modules{grid-template-columns:repeat(2,1fr)}
+ .kpis{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+ .modules{grid-template-columns:1fr 1fr;gap:8px}
+ .module{min-height:115px;padding:13px}
+ .kpis{gap:7px}
+ .kpi{padding:11px}
+ .formGrid{grid-template-columns:1fr}
+ .logoText b{font-size:14px}
+ .logoText span{font-size:9px}
+}
+</style>
+</head>
 
-  text-align:center;
+<body>
 
-  padding:9px 3px;
+<div id="loading">
+ <div class="loader">
+  <div class="spinner"></div>
+  <div id="loadingText">Loading...</div>
+ </div>
+</div>
 
-  border-right:
-    1px solid #facc15;
+<!-- LOGIN -->
+<section id="loginPage">
+ <div class="loginBox">
+  <img src="./icon-192.png" onerror="this.style.display='none'">
+  <h1>RELAY-3 TEAM HUB</h1>
+  <p>Teamwork • Duty • Progress</p>
 
-  color:#00ffff;
+  <select id="operatorSelect" class="field">
+   <option value="">Loading operators...</option>
+  </select>
 
-  font-size:10px;
+  <button class="primary" onclick="hubLogin()">ENTER TEAM HUB</button>
 
-  font-weight:900;
+  <div id="loginStatus" class="status hidden"></div>
+ </div>
+</section>
 
+<!-- MAIN -->
+<div id="mainPage">
+
+ <header class="topbar">
+  <div class="logoArea">
+   <img src="./icon-192.png" onerror="this.style.display='none'">
+   <div class="logoText">
+    <b>RELAY-3 TEAM HUB</b>
+    <span id="headerRole">TEAM PORTAL</span>
+   </div>
+  </div>
+
+  <button class="profileBtn" onclick="toggleProfile()">
+   <span id="headerUser">Guest</span>
+   <small id="headerPermission">● Online</small>
+  </button>
+
+  <div id="profileMenu" class="profileMenu hidden">
+   <button onclick="showHome();toggleProfile()">🏠 Home</button>
+   <button onclick="switchUser()">🔄 Switch User</button>
+   <button onclick="confirmLogout()">🚪 Logout</button>
+  </div>
+ </header>
+
+ <!-- HOME -->
+ <section id="homeScreen" class="screen active">
+
+  <div class="hero">
+   <h2 id="welcomeText">Welcome to Team Hub</h2>
+   <p>Select a module below. Access is controlled from the Google Sheet.</p>
+  </div>
+
+  <div class="kpis">
+   <div class="kpi"><span>Operator</span><strong id="kpiOperator">—</strong></div>
+   <div class="kpi"><span>Position</span><strong id="kpiPosition">—</strong></div>
+   <div class="kpi"><span>Due</span><strong id="kpiDue">—</strong></div>
+   <div class="kpi"><span>Shift</span><strong id="kpiShift">—</strong></div>
+  </div>
+
+  <div class="modules">
+
+   <button class="module" data-module="position" onclick="openHubModule('position')">
+    <div class="icon">👷</div>
+    <b>Check Position</b>
+    <span>Today's team position</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="due" onclick="openHubModule('due')">
+    <div class="icon">📅</div>
+    <b>My Due History</b>
+    <span>Duty history</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="report" onclick="openHubModule('report')">
+    <div class="icon">📊</div>
+    <b>My Monthly Report</b>
+    <span>Monthly duty report</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="leave" onclick="openHubModule('leave')">
+    <div class="icon">📝</div>
+    <b>Leave Entry</b>
+    <span>Submit leave</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="holiday" onclick="openHubModule('holiday')">
+    <div class="icon">🎉</div>
+    <b>Company Holiday</b>
+    <span>Holiday list</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="shift" onclick="openHubModule('shift')">
+    <div class="icon">⏰</div>
+    <b>Check Shift Schedule</b>
+    <span>Shift information</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="festival" onclick="openHubModule('festival')">
+    <div class="icon">🪔</div>
+    <b>Local Festival</b>
+    <span>Festival information</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="chat" onclick="openHubModule('chat')">
+    <div class="icon">💬</div>
+    <b>Live Group Chat</b>
+    <span>Team communication</span>
+    <i class="lock">🔓</i>
+   </button>
+
+   <button class="module" data-module="production" onclick="openHubModule('production')">
+    <div class="icon">🏭</div>
+    <b>Production Dashboard</b>
+    <span>Hourly production</span>
+    <i class="lock">🔓</i>
+   </button>
+
+  </div>
+ </section>
+
+ <!-- CHECK POSITION -->
+ <section id="positionScreen" class="screen">
+  <div class="screenHead">
+   <h2>👷 Check Position</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+  <div class="card">
+   <div id="positionStatus" class="status">Loading position...</div>
+   <div class="tableWrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Position</th>
+       <th>Operator</th>
+       <th>Due</th>
+       <th>Last Day</th>
+       <th>Shift</th>
+       <th>Status</th>
+      </tr>
+     </thead>
+     <tbody id="positionBody"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <!-- DUE HISTORY -->
+ <section id="dueScreen" class="screen">
+  <div class="screenHead">
+   <h2>📅 My Due History</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+  <div class="card">
+   <div class="tableWrap">
+    <table>
+     <thead>
+      <tr>
+       <th>Date</th>
+       <th>Position</th>
+       <th>Due</th>
+       <th>Shift</th>
+       <th>Status</th>
+      </tr>
+     </thead>
+     <tbody id="dueBody"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <!-- MONTHLY REPORT -->
+ <section id="reportScreen" class="screen">
+  <div class="screenHead">
+   <h2>📊 My Monthly Report</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+
+  <div class="card">
+   <div class="formGrid">
+    <div>
+     <label>From Date</label>
+     <input id="reportFrom" type="date" class="field">
+    </div>
+    <div>
+     <label>To Date</label>
+     <input id="reportTo" type="date" class="field">
+    </div>
+   </div>
+   <button class="primary" onclick="loadMonthlyReport()">VIEW REPORT</button>
+   <div id="reportResult" style="margin-top:12px"></div>
+  </div>
+ </section>
+
+ <!-- LEAVE -->
+ <section id="leaveScreen" class="screen">
+  <div class="screenHead">
+   <h2>📝 Leave Entry</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+
+  <div class="card">
+   <div class="formGrid">
+    <div>
+     <label>Leave Type</label>
+     <select id="leaveType" class="field">
+      <option value="CL">CL</option>
+      <option value="SL">SL</option>
+      <option value="EL">EL</option>
+      <option value="Other">Other</option>
+     </select>
+    </div>
+    <div>
+     <label>From Date</label>
+     <input id="leaveFrom" type="date" class="field">
+    </div>
+    <div>
+     <label>To Date</label>
+     <input id="leaveTo" type="date" class="field">
+    </div>
+   </div>
+
+   <label style="display:block;color:#79a6c1;font-size:11px;margin-bottom:5px">
+    Reason
+   </label>
+   <textarea id="leaveReason" class="field" placeholder="Enter reason..."></textarea>
+
+   <button class="primary" onclick="submitLeave()">SUBMIT LEAVE</button>
+   <div id="leaveResult"></div>
+  </div>
+ </section>
+
+ <!-- HOLIDAY -->
+ <section id="holidayScreen" class="screen">
+  <div class="screenHead">
+   <h2>🎉 Company Holiday</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+  <div class="card">
+   <div class="tableWrap">
+    <table>
+     <thead>
+      <tr><th>Date</th><th>Day</th><th>Holiday</th></tr>
+     </thead>
+     <tbody id="holidayBody"></tbody>
+    </table>
+   </div>
+  </div>
+ </section>
+
+ <!-- SHIFT -->
+ <section id="shiftScreen" class="screen">
+  <div class="screenHead">
+   <h2>⏰ Check Shift Schedule</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+  <div class="card">
+   <div class="formGrid">
+    <div>
+     <label>Date</label>
+     <input id="shiftDate" type="date" class="field">
+    </div>
+   </div>
+   <button class="primary" onclick="lookupShift()">CHECK SHIFT</button>
+   <div id="shiftResult" style="margin-top:12px"></div>
+  </div>
+ </section>
+
+ <!-- FESTIVAL -->
+ <section id="festivalScreen" class="screen">
+  <div class="screenHead">
+   <h2>🪔 Local Festival</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+  <div class="card">
+   <div id="festivalBody"></div>
+  </div>
+ </section>
+
+ <!-- CHAT -->
+ <section id="chatScreen" class="screen">
+  <div class="screenHead">
+   <h2>💬 Live Group Chat</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+
+  <div class="card">
+   <div id="chatBox" class="chatBox"></div>
+   <div class="chatSend">
+    <input id="chatInput" class="field" placeholder="Write message..."
+           onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="primary" onclick="sendChat()">SEND</button>
+   </div>
+  </div>
+ </section>
+
+ <!-- PRODUCTION -->
+ <section id="productionScreen" class="screen">
+  <div class="screenHead">
+   <h2>🏭 Production Dashboard</h2>
+   <button class="backBtn" onclick="showHome()">← Home</button>
+  </div>
+
+  <div id="productionApp">
+   <div class="card">
+    <div class="status">
+     Production Dashboard loading...
+    </div>
+   </div>
+  </div>
+ </section>
+
+</div>
+
+<!-- LOGOUT MODAL -->
+<div id="logoutModal" class="modalBg">
+ <div class="modal">
+  <h3>Logout?</h3>
+  <p>Are you sure you want to logout from RELAY-3 TEAM HUB?</p>
+  <div class="modalBtns">
+   <button class="cancel" onclick="closeLogout()">Cancel</button>
+   <button class="danger" onclick="doLogout()">Logout</button>
+  </div>
+ </div>
+</div>
+
+<script>
+/* =========================================================
+   RELAY-3 TEAM HUB
+========================================================= */
+
+const R3_URL =
+"https://script.google.com/macros/s/AKfycbyHQ5BMKG-IHIGMCqL4N2efVOshdsP34EY3Gu054YwmhC5qYZBNyEkRvW0_3SAOmMK8fA/exec";
+
+const PROD_URL =
+"https://script.google.com/macros/s/AKfycbxybGks2744Wmc3go7qwd7BJ_kEi_i577zQbaKyHX0Er3M7xssKxVmNpdep9ClMr3tHmw/exec";
+
+const HUB_KEY="relay3_team_hub_user";
+
+let r3Data=null;
+let currentUser="";
+let permissions={};
+let chatTimer=null;
+
+/* ---------- BASIC ---------- */
+
+function $(id){return document.getElementById(id)}
+
+function loading(show,text="Loading..."){
+ $("loadingText").textContent=text;
+ $("loading").style.display=show?"flex":"none";
 }
 
-
-.kpi:last-child {
-
-  border-right:none;
-
+function esc(v){
+ return String(v??"")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
 }
 
-
-.kpi-value {
-
-  display:block;
-
-  color:#ffff00;
-
-  font-size:16px;
-
-  margin-top:3px;
-
-}
-
-
-.meta-row {
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  text-align:center;
-
-  padding:8px;
-
-  color:#facc15;
-
-  font-size:12px;
-
-  border-top:
-    1px solid #facc15;
-
-}
-
-
-.meta-row strong {
-
-  color:#fff;
-
-}
-
-
-.hours-banner {
-
-  background:#db2777;
-
-  color:#fff;
-
-  text-align:center;
-
-  padding:9px;
-
-  font-size:14px;
-
-  font-weight:900;
-
-}
-
-
-/* =====================================================
-   FORM
-===================================================== */
-
-.form-row {
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:8px;
-
-  margin-bottom:8px;
-
-}
-
-
-.form-group {
-
-  display:flex;
-
-  flex-direction:column;
-
-  gap:4px;
-
-  margin-bottom:8px;
-
-}
-
-
-label {
-
-  color:#00ffff;
-
-  font-size:13px;
-
-  font-weight:900;
-
-}
-
-
-input,
-select {
-
-  width:100%;
-
-  height:43px;
-
-  background:#000;
-
-  color:#ffff00;
-
-  border:
-    1.5px solid #00bfff;
-
-  border-radius:6px;
-
-  padding:
-    8px 10px;
-
-  font-size:15px;
-
-  font-weight:800;
-
-  outline:none;
-
-}
-
-
-/*
-=====================================================
-NO NUMBER SPINNER
-=====================================================
-*/
-
-input[type="number"] {
-
-  appearance:none;
-
-  -webkit-appearance:none;
-
-  -moz-appearance:
-    textfield;
-
-}
-
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-
-  -webkit-appearance:none;
-
-  margin:0;
-
-}
-
-
-/* SHIFT NORMAL TEXT */
-
-#opShift {
-
-  text-align:center;
-
-  text-transform:uppercase;
-
-}
-
-
-/* =====================================================
-   BUTTONS
-===================================================== */
-
-.btn {
-
-  width:100%;
-
-  border:none;
-
-  border-radius:7px;
-
-  padding:12px;
-
-  color:#fff;
-
-  font-size:14px;
-
-  font-weight:900;
-
-  margin-top:5px;
-
-}
-
-
-.btn-settings {
-
-  background:#0284c7;
-
-}
-
-
-.btn-save {
-
-  background:#10b981;
-
-}
-
-
-.btn-refresh {
-
-  background:#334155;
-
-  border:
-    1px solid #00bfff;
-
-}
-
-
-.btn-cancel {
-
-  display:none;
-
-  background:#dc2626;
-
-}
-
-
-/* =====================================================
-   REFRESH SPINNER
-===================================================== */
-
-#refreshIcon {
-
-  display:inline-block;
-
-}
-
-
-#refreshIcon.spinning {
-
-  animation:
-    refreshSpin .8s linear infinite;
-
-}
-
-
-@keyframes refreshSpin {
-
-  from {
-
-    transform:
-      rotate(0deg);
-
+function jsonp(url,params={}){
+ return new Promise((resolve,reject)=>{
+  const cb="cb_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+  const s=document.createElement("script");
+  const q=new URLSearchParams({...params,callback:cb});
+  let done=false;
+
+  function clean(){
+   if(done)return;
+   done=true;
+   clearTimeout(timer);
+   delete window[cb];
+   s.remove();
   }
 
-  to {
+  const timer=setTimeout(()=>{
+   clean();
+   reject(new Error("Server timeout"));
+  },15000);
 
-    transform:
-      rotate(360deg);
+  window[cb]=data=>{
+   clean();
+   resolve(data);
+  };
 
+  s.onerror=()=>{
+   clean();
+   reject(new Error("Backend error"));
+  };
+
+  s.src=url+"?"+q.toString();
+  document.head.appendChild(s);
+ });
+}
+
+/* ---------- BOOT ---------- */
+
+async function bootHub(){
+ loading(true,"Loading team members...");
+
+ try{
+  const d=await jsonp(R3_URL,{action:"getDashboardData"});
+
+  if(!d || d.error) throw new Error(d?.error||"Unable to load data");
+
+  r3Data=d;
+
+  const operators=Array.isArray(d.operators)?d.operators:[];
+
+  $("operatorSelect").innerHTML=
+   '<option value="">Select Operator</option>'+
+   operators.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("")+
+   '<option value="Guest">Guest</option>';
+
+  const saved=localStorage.getItem(HUB_KEY);
+
+  if(saved && (operators.includes(saved)||saved==="Guest")){
+   $("operatorSelect").value=saved;
   }
 
+  loading(false);
+
+ }catch(e){
+  loading(false);
+  $("operatorSelect").innerHTML=
+   '<option value="">Unable to load operators</option>'+
+   '<option value="Guest">Guest</option>';
+
+  $("loginStatus").textContent=e.message;
+  $("loginStatus").classList.remove("hidden");
+ }
 }
 
+function hubLogin(){
+ const name=$("operatorSelect").value;
 
+ if(!name){
+  $("loginStatus").textContent="Please select an operator.";
+  $("loginStatus").classList.remove("hidden");
+  return;
+ }
+
+ currentUser=name;
+ localStorage.setItem(HUB_KEY,name);
+
+ applyPermissions();
+ showDashboard();
+}
+
+/* ---------- PERMISSIONS ---------- */
+
+function normal(v){
+ return String(v??"").trim().toLowerCase();
+}
+
+function getPermissionSource(){
+ if(!r3Data)return null;
+
+ if(currentUser==="Guest"){
+  return r3Data.guestPermissions ||
+         r3Data.guest ||
+         r3Data.permissions?.Guest ||
+         {};
+ }
+
+ return r3Data.operatorPermissions?.[currentUser] ||
+        r3Data.permissions?.[currentUser] ||
+        {};
+}
+
+function permissionValue(source,...keys){
+ for(const k of keys){
+  if(Object.prototype.hasOwnProperty.call(source,k)){
+   return normal(source[k])==="yes";
+  }
+ }
+ return false;
+}
+
+function applyPermissions(){
+ const p=getPermissionSource();
+
+ permissions={
+  position:permissionValue(p,
+   "Check Position","checkPosition","position"),
+  due:permissionValue(p,
+   "My Due History","myDueHistory","dueHistory"),
+  report:permissionValue(p,
+   "My Monthly Report","myMonthlyReport","monthlyReport"),
+  leave:permissionValue(p,
+   "Leave Entry","leaveEntry","leave"),
+  holiday:permissionValue(p,
+   "Company Holiday","companyHoliday","holiday"),
+  shift:permissionValue(p,
+   "Check Shift Schedule","checkShiftSchedule","shift"),
+  festival:permissionValue(p,
+   "Local Festival","localFestival","festival"),
+  chat:permissionValue(p,
+   "Live Group Chat","liveGroupChat","chat"),
+  production:permissionValue(p,
+   "Production Dashboard","productionDashboard","production")
+ };
+
+ document.querySelectorAll(".module").forEach(card=>{
+  const m=card.dataset.module;
+  const ok=permissions[m]===true;
+
+  card.classList.toggle("locked",!ok);
+
+  const lock=card.querySelector(".lock");
+  if(lock)lock.textContent=ok?"🔓":"🔒";
+ });
+}
+
+function hasAccess(m){
+ return permissions[m]===true;
+}
+
+/* ---------- DASHBOARD ---------- */
+
+function showDashboard(){
+ $("loginPage").style.display="none";
+ $("mainPage").style.display="block";
+
+ $("headerUser").textContent=currentUser;
+ $("headerRole").textContent=
+  currentUser==="Guest"?"GUEST ACCESS":"OPERATOR PORTAL";
+
+ $("welcomeText").textContent=
+  currentUser==="Guest"
+   ?"Welcome, Guest 👋"
+   :"Welcome, "+currentUser+" 👋";
+
+ updateHubKPIs();
+}
+
+function updateHubKPIs(){
+ let row=null;
+
+ const board=r3Data?.board||[];
+
+ if(Array.isArray(board)){
+  row=board.find(x=>
+   normal(x.name||x.operator||x.operatorName)===normal(currentUser)
+  );
+ }
+
+ $("kpiOperator").textContent=currentUser;
+ $("kpiPosition").textContent=
+  row?.position||row?.pos||"—";
+ $("kpiDue").textContent=
+  row?.due||row?.dueDate||"—";
+ $("kpiShift").textContent=
+  row?.shift||"—";
+}
+
+function showHome(){
+ document.querySelectorAll(".screen").forEach(x=>
+  x.classList.remove("active")
+ );
+ $("homeScreen").classList.add("active");
+
+ stopChatPolling();
+}
+
+function openHubModule(m){
+ if(!hasAccess(m)){
+  alert("This module is locked for your account.");
+  return;
+ }
+
+ document.querySelectorAll(".screen").forEach(x=>
+  x.classList.remove("active")
+ );
+
+ const map={
+  position:"positionScreen",
+  due:"dueScreen",
+  report:"reportScreen",
+  leave:"leaveScreen",
+  holiday:"holidayScreen",
+  shift:"shiftScreen",
+  festival:"festivalScreen",
+  chat:"chatScreen",
+  production:"productionScreen"
+ };
+
+ $(map[m]).classList.add("active");
+
+ if(m==="position")renderPosition();
+ if(m==="due")renderDue();
+ if(m==="report")prepareReport();
+ if(m==="holiday")renderHoliday();
+ if(m==="shift")prepareShift();
+ if(m==="festival")renderFestival();
+ if(m==="chat"){
+  loadChat();
+  startChatPolling();
+ }
+ if(m==="production")loadProduction();
+}
+
+/* ---------- PROFILE ---------- */
+
+function toggleProfile(){
+ $("profileMenu").classList.toggle("hidden");
+}
+
+document.addEventListener("click",e=>{
+ const menu=$("profileMenu");
+ const btn=document.querySelector(".profileBtn");
+
+ if(menu && !menu.contains(e.target) && !btn.contains(e.target)){
+  menu.classList.add("hidden");
+ }
+});
+
+function switchUser(){
+ $("profileMenu").classList.add("hidden");
+ $("mainPage").style.display="none";
+ $("loginPage").style.display="flex";
+ $("operatorSelect").value="";
+}
+
+function confirmLogout(){
+ $("profileMenu").classList.add("hidden");
+ $("logoutModal").classList.add("show");
+}
+
+function closeLogout(){
+ $("logoutModal").classList.remove("show");
+}
+
+function doLogout(){
+ localStorage.removeItem(HUB_KEY);
+ localStorage.removeItem("relay3_operator");
+ localStorage.removeItem("relay3_user");
+
+ currentUser="";
+ permissions={};
+ r3Data=null;
+
+ closeLogout();
+
+ $("mainPage").style.display="none";
+ $("loginPage").style.display="flex";
+ $("operatorSelect").value="";
+ $("loginStatus").classList.add("hidden");
+
+ stopChatPolling();
+
+ bootHub();
+}
+
+/* ---------- CHECK POSITION ---------- */
+
+function renderPosition(){
+ const body=$("positionBody");
+
+ const board=Array.isArray(r3Data?.board)?r3Data.board:[];
+
+ if(!board.length){
+  body.innerHTML=
+   '<tr><td colspan="6">No position data available.</td></tr>';
+  return;
+ }
+
+ body.innerHTML=board.map(r=>{
+  const name=r.name||r.operator||r.operatorName||"";
+  const pos=r.position||r.pos||"—";
+  const due=r.due||r.dueDate||"—";
+  const last=r.lastDay||r.last||r.lastDate||"—";
+  const shift=r.shift||"—";
+  const status=r.status||r.availability||"—";
+
+  const cls=
+   normal(status).includes("available")?"available":
+   normal(status).includes("off")?"off":
+   normal(status).includes("leave")?"leave":"";
+
+  return `
+   <tr class="${normal(name)===normal(currentUser)?"me":""}">
+    <td>${esc(pos)}</td>
+    <td><b>${esc(name)}</b></td>
+    <td>${esc(due)}</td>
+    <td>${esc(last)}</td>
+    <td>${esc(shift)}</td>
+    <td><span class="badge ${cls}">${esc(status)}</span></td>
+   </tr>`;
+ }).join("");
+
+ $("positionStatus").textContent=
+  "Position board loaded for "+currentUser+".";
+}
+
+/* ---------- DUE HISTORY ---------- */
+
+function renderDue(){
+ const body=$("dueBody");
+ const matrix=r3Data?.dueMatrix;
+
+ if(!matrix){
+  body.innerHTML=
+   '<tr><td colspan="5">No due history available.</td></tr>';
+  return;
+ }
+
+ let rows=[];
+
+ if(Array.isArray(matrix)){
+  rows=matrix;
+ }else if(typeof matrix==="object"){
+  const me=matrix[currentUser]||matrix[Object.keys(matrix).find(
+   k=>normal(k)===normal(currentUser)
+  )];
+
+  if(Array.isArray(me))rows=me;
+ }
+
+ body.innerHTML=rows.length?
+  rows.map(r=>{
+   if(Array.isArray(r)){
+    return `<tr>${r.slice(0,5).map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`;
+   }
+
+   return `<tr>
+    <td>${esc(r.date||r.Date||"—")}</td>
+    <td>${esc(r.position||r.Position||"—")}</td>
+    <td>${esc(r.due||r.Due||"—")}</td>
+    <td>${esc(r.shift||r.Shift||"—")}</td>
+    <td>${esc(r.status||r.Status||"—")}</td>
+   </tr>`;
+  }).join("")
+  :
+  '<tr><td colspan="5">No due history found.</td></tr>';
+}
+
+/* ---------- REPORT ---------- */
+
+function prepareReport(){
+ const d=new Date();
+ const first=new Date(d.getFullYear(),d.getMonth(),1);
+ const last=new Date(d.getFullYear(),d.getMonth()+1,0);
+
+ $("reportFrom").value=iso(first);
+ $("reportTo").value=iso(last);
+}
+
+async function loadMonthlyReport(){
+ const from=$("reportFrom").value;
+ const to=$("reportTo").value;
+
+ if(!from||!to){
+  alert("Please select both dates.");
+  return;
+ }
+
+ loading(true,"Loading monthly report...");
+
+ try{
+  const d=await jsonp(R3_URL,{
+   action:"getMonthlyReport",
+   name:currentUser,
+   fromDate:from,
+   toDate:to
+  });
+
+  renderReportResult(d);
+
+ }catch(e){
+  $("reportResult").innerHTML=
+   `<div class="status">${esc(e.message)}</div>`;
+ }finally{
+  loading(false);
+ }
+}
+
+function renderReportResult(d){
+ const box=$("reportResult");
+
+ if(!d){
+  box.innerHTML='<div class="status">No report returned.</div>';
+  return;
+ }
+
+ if(d.error){
+  box.innerHTML=
+   `<div class="status">${esc(d.error)}</div>`;
+  return;
+ }
+
+ let data=d.report||d.data||d;
+
+ if(Array.isArray(data)){
+  box.innerHTML=`
+   <div class="tableWrap">
+    <table>
+     <tbody>
+      ${data.map(r=>{
+       if(Array.isArray(r))
+        return `<tr>${r.map(x=>`<td>${esc(x)}</td>`).join("")}</tr>`;
+       return `<tr><td>${esc(JSON.stringify(r))}</td></tr>`;
+      }).join("")}
+     </tbody>
+    </table>
+   </div>`;
+ }else{
+  box.innerHTML=
+   `<pre style="white-space:pre-wrap;color:#9ddcff">${esc(JSON.stringify(data,null,2))}</pre>`;
+ }
+}
+
+/* ---------- LEAVE ---------- */
+
+async function submitLeave(){
+ const type=$("leaveType").value;
+ const from=$("leaveFrom").value;
+ const to=$("leaveTo").value;
+ const reason=$("leaveReason").value.trim();
+
+ if(!from||!to){
+  alert("Please select leave dates.");
+  return;
+ }
+
+ if(new Date(to)<new Date(from)){
+  alert("To Date cannot be before From Date.");
+  return;
+ }
+
+ const days=Math.floor(
+  (new Date(to)-new Date(from))/86400000
+ )+1;
+
+ loading(true,"Submitting leave...");
+
+ try{
+  const d=await jsonp(R3_URL,{
+   action:"submitLeave",
+   name:currentUser,
+   type,
+   fromDate:from,
+   toDate:to,
+   days,
+   reason
+  });
+
+  $("leaveResult").innerHTML=
+   `<div class="status">${esc(
+    d?.message||d?.status||"Leave submitted successfully."
+   )}</div>`;
+
+ }catch(e){
+  $("leaveResult").innerHTML=
+   `<div class="status">${esc(e.message)}</div>`;
+ }finally{
+  loading(false);
+ }
+}
+
+/* ---------- HOLIDAY ---------- */
+
+function renderHoliday(){
+ const body=$("holidayBody");
+ const list=r3Data?.holidays||
+            r3Data?.holidayList||
+            r3Data?.Holiday_List||
+            [];
+
+ if(!Array.isArray(list)||!list.length){
+  body.innerHTML=
+   '<tr><td colspan="3">No holiday data available.</td></tr>';
+  return;
+ }
+
+ body.innerHTML=list.map(r=>{
+  if(Array.isArray(r)){
+   return `<tr>
+    <td>${esc(r[0]||"")}</td>
+    <td>${esc(r[1]||"")}</td>
+    <td>${esc(r[2]||"")}</td>
+   </tr>`;
+  }
+
+  return `<tr>
+   <td>${esc(r.date||r.Date||"")}</td>
+   <td>${esc(r.day||r.Day||"")}</td>
+   <td>${esc(r.name||r.holiday||r.Holiday||"")}</td>
+  </tr>`;
+ }).join("");
+}
+
+/* ---------- SHIFT ---------- */
+
+function prepareShift(){
+ $("shiftDate").value=iso(new Date());
+}
+
+async function lookupShift(){
+ const date=$("shiftDate").value;
+
+ if(!date){
+  alert("Please select date.");
+  return;
+ }
+
+ const schedules=r3Data?.shiftSchedule||
+                  r3Data?.shiftSchedules||
+                  r3Data?.shift||
+                  [];
+
+ let found=[];
+
+ if(Array.isArray(schedules)){
+  found=schedules.filter(r=>{
+   const d=Array.isArray(r)?r[0]:
+    (r.date||r.Date||r.dayDate||"");
+   return String(d).slice(0,10)===date;
+  });
+ }
+
+ if(found.length){
+  $("shiftResult").innerHTML=
+   `<div class="status">${esc(JSON.stringify(found,null,2))}</div>`;
+ }else{
+  $("shiftResult").innerHTML=
+   '<div class="status">No shift record found for selected date.</div>';
+ }
+}
+
+/* ---------- FESTIVAL ---------- */
+
+function renderFestival(){
+ const box=$("festivalBody");
+ const list=r3Data?.festivals||
+            r3Data?.localFestival||
+            r3Data?.festival||
+            [];
+
+ if(Array.isArray(list)&&list.length){
+  box.innerHTML=list.map(r=>
+   `<div class="card">
+    ${esc(Array.isArray(r)?r.join(" • "):JSON.stringify(r))}
+   </div>`
+  ).join("");
+ }else{
+  box.innerHTML=
+   '<div class="status">No local festival information available.</div>';
+ }
+}
+
+/* ---------- CHAT ---------- */
+
+function startChatPolling(){
+ stopChatPolling();
+ chatTimer=setInterval(loadChat,15000);
+}
+
+function stopChatPolling(){
+ if(chatTimer){
+  clearInterval(chatTimer);
+  chatTimer=null;
+ }
+}
+
+async function loadChat(){
+ try{
+  const d=await jsonp(R3_URL,{action:"getChat"});
+  renderChat(d);
+ }catch(e){
+  console.log("Chat:",e.message);
+ }
+}
+
+function renderChat(d){
+ const box=$("chatBox");
+ const messages=d?.messages||
+               d?.chat||
+               d?.data||
+               (Array.isArray(d)?d:[]);
+
+ if(!Array.isArray(messages)){
+  box.innerHTML=
+   '<div class="status">No messages.</div>';
+  return;
+ }
+
+ box.innerHTML=messages.map(m=>{
+  const name=m.name||m.Name||m.operator||"";
+  const text=m.message||m.Message||m.text||"";
+  const time=m.timestamp||m.time||m.Timestamp||"";
+
+  return `<div class="msg ${normal(name)===normal(currentUser)?"mine":""}">
+   <b>${esc(name)}</b>
+   <p>${esc(text)}</p>
+   <small>${esc(time)}</small>
+  </div>`;
+ }).join("");
+
+ box.scrollTop=box.scrollHeight;
+}
+
+async function sendChat(){
+ const input=$("chatInput");
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ input.value="";
+
+ try{
+  const d=await jsonp(R3_URL,{
+   action:"sendChat",
+   name:currentUser,
+   message:text
+  });
+
+  if(d?.error){
+   alert(d.error);
+  }
+
+  loadChat();
+
+ }catch(e){
+  alert("Message failed: "+e.message);
+ }
+}
+
+/* ---------- HELPERS ---------- */
+
+function iso(d){
+ const x=new Date(d);
+ return x.getFullYear()+"-"+
+  String(x.getMonth()+1).padStart(2,"0")+"-"+
+  String(x.getDate()).padStart(2,"0");
+}
+
+/* ---------- START ---------- */
+
+window.addEventListener("load",bootHub);
+
+</script><style>
 /* =====================================================
-   PROGRESS
+   PRODUCTION DASHBOARD STYLE
 ===================================================== */
 
-.progress-wrap {
-
-  display:none;
-
-  height:7px;
-
-  background:#020617;
-
-  border-radius:10px;
-
-  overflow:hidden;
-
-  margin:6px 0;
-
-}
-
-
-.progress-bar {
-
-  height:100%;
-
-  width:0%;
-
-  background:#00ffff;
-
-  transition:.3s;
-
-}
-
-
-/* =====================================================
-   TABLE
-===================================================== */
-
-.table-wrap {
-
+#productionApp .app{
   width:100%;
-
-  overflow-x:auto;
-
-}
-
-
-.production-table {
-
-  width:100%;
-
-  min-width:1200px;
-
-  border-collapse:collapse;
-
-}
-
-
-.production-table th {
-
-  background:#a95f00;
-
-  color:#000;
-
-  padding:
-    8px 5px;
-
-  border:
-    1px solid #401900;
-
-  font-size:11px;
-
-  font-weight:900;
-
-  white-space:nowrap;
-
-}
-
-
-.production-table td {
-
-  background:#000;
-
-  color:#fff;
-
-  border:
-    1px solid #541010;
-
-  padding:
-    8px 5px;
-
-  text-align:center;
-
-  font-size:11px;
-
-  font-weight:800;
-
-  white-space:nowrap;
-
-}
-
-
-.production-table .hour {
-
-  background:#00bfff;
-
-  color:#000;
-
-}
-
-
-.production-table .yellow {
-
-  color:#ffff00;
-
-}
-
-
-.production-table .cyan {
-
-  color:#00ffff;
-
-}
-
-
-/* =====================================================
-   ACTION BUTTONS
-===================================================== */
-
-.action-buttons {
-
-  display:flex;
-
-  justify-content:center;
-
-  gap:4px;
-
-}
-
-
-.action-btn {
-
-  width:32px;
-
-  height:31px;
-
-  border:none;
-
-  border-radius:5px;
-
-  color:#fff;
-
-  font-size:14px;
-
-}
-
-
-.edit-btn {
-
-  background:#0284c7;
-
-}
-
-
-.delete-btn {
-
-  background:#dc2626;
-
-}
-
-
-.whatsapp-btn {
-
-  background:#16a34a;
-
-}
-
-
-.pdf-btn {
-
-  background:#dc2626;
-
-}
-
-
-/* =====================================================
-   METRICS
-===================================================== */
-
-.metrics-grid {
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:7px;
-
-  margin-top:8px;
-
-}
-
-
-.metric-box {
-
-  background:#020617;
-
-  border:
-    1.5px solid #00bfff;
-
-  border-radius:6px;
-
-  padding:9px;
-
-  text-align:center;
-
-}
-
-
-.metric-label {
-
-  display:block;
-
-  color:#00ffff;
-
-  font-size:10px;
-
-  font-weight:900;
-
-}
-
-
-.metric-value {
-
-  display:block;
-
-  color:#ffff00;
-
-  font-size:17px;
-
-  font-weight:900;
-
-  margin-top:3px;
-
-}
-
-
-/* =====================================================
-   GSR
-===================================================== */
-
-.gsr-card {
-
-  background:#020617;
-
-  border:
-    2px solid #facc15;
-
-  border-radius:7px;
-
+  max-width:1200px;
+  margin:0 auto;
   padding:10px;
+  color:#fff;
+}
 
+#productionApp .target-panel{
+  background:linear-gradient(145deg,#061a2b,#03101b);
+  border:1px solid #075b82;
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+#productionApp .top-bar{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:#70d9ff;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+#productionApp .req-box{
   text-align:center;
-
-  margin-top:8px;
-
-}
-
-
-.gsr-title {
-
-  color:#00ffff;
-
-  font-size:12px;
-
-  font-weight:900;
-
-}
-
-
-.gsr-value {
-
-  color:#ffff00;
-
-  font-size:21px;
-
-  font-weight:900;
-
-  margin-top:3px;
-
-}
-
-
-/* =====================================================
-   DELETE ALL
-===================================================== */
-
-.delete-all {
-
-  width:100%;
-
-  background:#dc2626;
-
-  color:#fff;
-
-  border:none;
-
-  border-radius:7px;
-
-  padding:13px;
-
-  margin-top:8px;
-
-  font-size:15px;
-
-  font-weight:900;
-
-}
-
-
-.delete-all:disabled {
-
-  opacity:.6;
-
-}
-
-
-/* =====================================================
-   REPORT
-===================================================== */
-
-.report-grid {
-
-  display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:7px;
-
-  margin-top:8px;
-
-}
-
-
-.report-btn {
-
-  border:none;
-
-  border-radius:7px;
-
-  padding:12px 5px;
-
-  color:#fff;
-
-  font-size:12px;
-
-  font-weight:900;
-
-}
-
-
-.whatsapp-report {
-
-  background:#16a34a;
-
-}
-
-
-.pdf-report {
-
-  background:#dc2626;
-
-}
-
-
-/* =====================================================
-   CUSTOM DELETE MODAL
-===================================================== */
-
-.modal-overlay {
-
-  position:fixed;
-
-  inset:0;
-
-  background:
-    rgba(0,0,0,.85);
-
-  display:none;
-
-  align-items:center;
-
-  justify-content:center;
-
-  z-index:99999;
-
-  padding:20px;
-
-}
-
-
-.modal-box {
-
-  width:100%;
-
-  max-width:390px;
-
-  background:#07142b;
-
-  border:
-    2px solid #00bfff;
-
+  background:#06111c;
+  border:1px solid #164b65;
   border-radius:12px;
-
-  padding:20px;
-
-  text-align:center;
-
+  padding:13px;
+  margin-bottom:12px;
 }
 
-
-.modal-icon {
-
-  color:#facc15;
-
-  font-size:35px;
-
-  margin-bottom:8px;
-
-}
-
-
-.modal-title {
-
-  color:#ffff00;
-
-  font-size:19px;
-
+#productionApp .req-value{
+  font-size:28px;
   font-weight:900;
-
+  color:#22d3ee;
 }
 
-
-.modal-message {
-
-  color:#fff;
-
-  font-size:14px;
-
-  margin:10px 0 18px;
-
-  line-height:1.5;
-
+#productionApp .req-label{
+  display:block;
+  color:#759caf;
+  font-size:9px;
+  margin-top:4px;
 }
 
-
-.modal-buttons {
-
+#productionApp .kpi-grid{
   display:grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap:8px;
-
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
 }
 
+#productionApp .kpi{
+  background:#081827;
+  border:1px solid #173d54;
+  border-radius:11px;
+  padding:11px;
+  color:#82a8bc;
+  font-size:9px;
+  font-weight:800;
+}
 
-.modal-buttons button {
-
-  border:none;
-
-  border-radius:7px;
-
-  padding:12px;
-
-  font-size:13px;
-
+#productionApp .kpi-value{
+  display:block;
+  color:#fff;
+  font-size:20px;
+  margin-top:5px;
   font-weight:900;
-
 }
 
-
-.modal-cancel {
-
-  background:#475569;
-
-  color:#fff;
-
+#productionApp .meta-row{
+  display:flex;
+  justify-content:space-between;
+  margin-top:11px;
+  color:#7fa9bd;
+  font-size:10px;
 }
 
-
-.modal-delete {
-
-  background:#dc2626;
-
+#productionApp .meta-row strong{
   color:#fff;
-
 }
 
-
-/* =====================================================
-   TOAST
-===================================================== */
-
-#toast {
-
-  position:fixed;
-
-  left:50%;
-
-  bottom:20px;
-
-  transform:
-    translate(-50%,100px);
-
-  opacity:0;
-
-  transition:.3s;
-
-  z-index:100001;
-
-  background:#07142b;
-
-  border:
-    2px solid #00bfff;
-
-  color:#fff;
-
-  border-radius:8px;
-
-  padding:
-    11px 15px;
-
-  font-size:13px;
-
-  font-weight:900;
-
+#productionApp .hours-banner{
+  margin-top:11px;
   text-align:center;
+  padding:9px;
+  border-radius:8px;
+  background:#06334a;
+  color:#65d9ff;
+  font-size:10px;
+  font-weight:900;
+}
 
+#productionApp .card{
+  background:#071521;
+  border:1px solid #193d54;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+#productionApp .section-title{
+  font-size:13px;
+  font-weight:900;
+  color:#bdefff;
+  margin-bottom:13px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+#productionApp .form-row{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+#productionApp .form-group{
+  margin-bottom:10px;
+}
+
+#productionApp .form-group label{
+  display:block;
+  color:#78a7bd;
+  font-size:10px;
+  font-weight:800;
+  margin-bottom:5px;
+}
+
+#productionApp input,
+#productionApp select{
+  width:100%;
+  height:43px;
+  background:#030c14;
+  border:1px solid #245069;
+  color:#fff;
+  border-radius:8px;
+  padding:0 10px;
+  outline:none;
+}
+
+#productionApp input:focus,
+#productionApp select:focus{
+  border-color:#10b9ee;
+}
+
+#productionApp .btn{
+  width:100%;
+  min-height:43px;
+  border:0;
+  border-radius:9px;
+  font-weight:900;
+  font-size:11px;
+  margin-top:7px;
+}
+
+#productionApp .btn-save{
+  background:#0ea5e9;
+  color:#021019;
+}
+
+#productionApp .btn-settings{
+  background:#22c55e;
+  color:#031009;
+}
+
+#productionApp .btn-cancel{
+  background:#334155;
+  color:#fff;
+}
+
+#productionApp .btn-refresh{
+  background:#0b3044;
+  color:#65d9ff;
+  border:1px solid #17617f;
+  margin-bottom:12px;
+}
+
+#productionApp .table-wrap{
+  width:100%;
+  overflow:auto;
+}
+
+#productionApp .production-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:1050px;
+}
+
+#productionApp .production-table th,
+#productionApp .production-table td{
+  padding:8px 7px;
+  border-bottom:1px solid #173343;
+  font-size:9px;
+  white-space:nowrap;
+  text-align:center;
+}
+
+#productionApp .production-table th{
+  background:#0a2638;
+  color:#70d8ff;
+  font-weight:900;
+}
+
+#productionApp .production-table td{
+  color:#d6e8f1;
+}
+
+#productionApp .metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin-top:12px;
+}
+
+#productionApp .metric-box{
+  background:#06121d;
+  border:1px solid #173b51;
+  border-radius:10px;
+  padding:10px;
+  text-align:center;
+}
+
+#productionApp .metric-label{
+  display:block;
+  color:#7297a9;
+  font-size:8px;
+  font-weight:900;
+}
+
+#productionApp .metric-value{
+  display:block;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  margin-top:5px;
+}
+
+#productionApp .gsr-card{
+  margin-top:10px;
+  background:#241b08;
+  border:1px solid #80620e;
+  border-radius:10px;
+  padding:11px;
+  text-align:center;
+}
+
+#productionApp .gsr-title{
+  color:#facc15;
+  font-size:9px;
+  font-weight:900;
+}
+
+#productionApp .gsr-value{
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  margin-top:4px;
+}
+
+#productionApp .delete-all{
+  width:100%;
+  margin-top:10px;
+  min-height:42px;
+  border:0;
+  border-radius:8px;
+  background:#991b1b;
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+}
+
+#productionApp .report-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+  margin-top:10px;
+}
+
+#productionApp .report-btn{
+  min-height:42px;
+  border-radius:8px;
+  border:1px solid #27536a;
+  background:#0b2231;
+  color:#aeeeff;
+  font-size:9px;
+  font-weight:900;
+}
+
+#productionApp .progress-wrap{
+  width:100%;
+  height:4px;
+  background:#102532;
+  border-radius:10px;
+  overflow:hidden;
+  margin:8px 0;
+  display:none;
+}
+
+#productionApp .progress-bar{
+  height:100%;
+  width:0;
+  background:#22d3ee;
+  transition:.2s;
+}
+
+#productionApp .modal-overlay{
+  position:fixed;
+  inset:0;
+  background:#000c;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+#productionApp .modal-box{
+  width:min(360px,94vw);
+  background:#081827;
+  border:1px solid #28536c;
+  border-radius:15px;
+  padding:20px;
+  text-align:center;
+}
+
+#productionApp .modal-icon{
+  font-size:30px;
+  color:#facc15;
+  margin-bottom:8px;
+}
+
+#productionApp .modal-title{
+  font-size:17px;
+  font-weight:900;
+  margin-bottom:7px;
+}
+
+#productionApp .modal-message{
+  color:#91adbc;
+  font-size:11px;
+  line-height:1.5;
+}
+
+#productionApp .modal-buttons{
+  display:flex;
+  gap:8px;
+  margin-top:15px;
+}
+
+#productionApp .modal-buttons button{
+  flex:1;
+  min-height:40px;
+  border:0;
+  border-radius:8px;
+  font-weight:900;
+  font-size:10px;
+}
+
+#productionApp .modal-cancel{
+  background:#475569;
+  color:#fff;
+}
+
+#productionApp .modal-delete{
+  background:#dc2626;
+  color:#fff;
+}
+
+#productionApp #toast{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translate(-50%,100px);
+  opacity:0;
+  transition:.3s;
+  z-index:100001;
+  background:#07142b;
+  border:2px solid #00bfff;
+  color:#fff;
+  border-radius:8px;
+  padding:11px 15px;
+  font-size:12px;
+  font-weight:900;
+  text-align:center;
   max-width:90%;
-
 }
 
-
-#toast.show {
-
-  transform:
-    translate(-50%,0);
-
+#productionApp #toast.show{
+  transform:translate(-50%,0);
   opacity:1;
-
 }
 
+@media(max-width:650px){
+  #productionApp .kpi-grid{
+    grid-template-columns:1fr;
+  }
 
+  #productionApp .form-row{
+    grid-template-columns:1fr;
+  }
+
+  #productionApp .metrics-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  #productionApp .report-grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
+<script>
 /* =====================================================
-   MOBILE
+   PRODUCTION DASHBOARD HTML
 ===================================================== */
 
-@media(max-width:600px) {
+(function(){
 
-  body {
-
-    padding:
-      7px 4px 30px;
-
-  }
-
-
-  .card {
-
-    padding:10px;
-
-  }
-
-
-  .section-title {
-
-    font-size:16px;
-
-  }
-
-
-  input,
-  select {
-
-    height:42px;
-
-    font-size:14px;
-
-  }
-
-
-  label {
-
-    font-size:12px;
-
-  }
-
-
-  .req-value {
-
-    font-size:23px;
-
-  }
-
-}
-
-</style><style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#030a12;color:#eef7ff}button,select,input{font:inherit}
-#hubLogin{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.hub-login-card{width:min(430px,94vw);background:#081827;border:1px solid #24506c;border-radius:28px;padding:30px;text-align:center;box-shadow:0 25px 80px #000b}.hub-login-card img{width:110px;height:110px;object-fit:contain;margin-bottom:10px}.hub-login-card h1{margin:0;font-size:27px}.hub-login-sub{color:#8fb4ca;font-size:13px;margin:8px 0 28px}.hub-login-label{display:block;text-align:left;color:#8fd7f3;font-size:11px;margin-bottom:7px}.hub-login-select{width:100%;height:52px;border-radius:13px;border:1px solid #28607e;background:#06131f;color:#fff;padding:0 14px;outline:none}.hub-continue{width:100%;height:52px;margin-top:16px;border:0;border-radius:13px;background:#1dc4e9;color:#021019;font-weight:900}.hub-connection{display:inline-block;margin-top:18px;padding:7px 12px;border-radius:20px;background:#06344a;color:#55d9ff;font-size:10px}.hub-connection.error{background:#45151b;color:#ff7c7c}
-#hubApp{min-height:100vh}.hub-layout{display:flex;min-height:100vh}.hub-sidebar{width:202px;flex-shrink:0;background:#06121e;border-right:1px solid #1b3b52;padding:16px 10px;position:fixed;left:0;top:0;bottom:0;overflow:auto;z-index:100}.hub-brand{display:flex;align-items:center;gap:8px;padding:7px 6px 15px;border-bottom:1px solid #173448;margin-bottom:10px}.hub-brand img{width:38px;height:38px;object-fit:contain}.hub-brand-title{font-weight:900;font-size:12px}.hub-brand-sub{color:#76a6bd;font-size:8px;margin-top:2px}.hub-nav{display:flex;flex-direction:column;gap:4px}.hub-nav-btn{width:100%;min-height:42px;border:0;background:transparent;color:#b9d0de;border-radius:9px;text-align:left;padding:8px 9px;display:flex;align-items:center;gap:9px;font-size:12px}.hub-nav-btn:hover{background:#0b2131}.hub-nav-btn.locked{color:#657987;background:#07141f}.hub-nav-icon{width:21px;text-align:center;font-size:15px}.hub-lock{margin-left:auto}.hub-main{margin-left:202px;min-width:0;flex:1}.hub-topbar{height:62px;background:#061421;border-bottom:1px solid #1a3a50;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:200}.hub-top-title{font-size:13px;font-weight:900}.hub-profile-menu{position:relative}.hub-profile-btn{border:1px solid #28536b;background:#0b2131;color:#c9e5f3;padding:7px 9px;border-radius:8px;font-size:10px}.hub-menu{position:absolute;right:0;top:44px;width:145px;background:#081827;border:1px solid #28536b;border-radius:10px;padding:6px;display:none;box-shadow:0 12px 35px #000b}.hub-menu.show{display:block}.hub-menu button{width:100%;border:0;background:transparent;color:#d8edf7;text-align:left;padding:9px;border-radius:7px;font-size:11px}.hub-menu button:hover{background:#0d2638}.hub-content{padding:26px 22px 50px;max-width:1400px;margin:auto}.hub-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:20px}.hub-eyebrow{color:#16c9f4;font-size:10px;font-weight:900;letter-spacing:1px}.hub-hero h1{margin:7px 0 5px;font-size:36px;line-height:1.05}.hub-date{color:#91b4c8;font-size:11px}.hub-badge{background:#073049;color:#57d8ff;border-radius:20px;padding:7px 11px;font-size:9px}.hub-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:23px}.hub-kpi{background:#081a29;border:1px solid #21465d;border-radius:17px;padding:17px;min-height:98px}.hub-kpi-label{color:#8fb6cb;font-size:9px}.hub-kpi-value{font-size:26px;font-weight:900;margin-top:8px}.hub-cyan{color:#25d0f4}.hub-yellow{color:#facc15}.hub-orange{color:#fb923c}.hub-green{color:#34d399}.hub-kpi-sub{margin-top:4px;color:#86a9bd;font-size:9px}.hub-section-title{font-size:15px;margin:0 0 11px}.hub-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.hub-card{background:#081a29;border:1px solid #1e4259;border-radius:17px;padding:17px;min-height:140px;display:flex;flex-direction:column}.hub-card.locked{opacity:.56}.hub-card-icon{font-size:21px;margin-bottom:10px}.hub-card h3{margin:0;font-size:13px}.hub-card p{color:#7896a8;font-size:9px;margin:7px 0 13px;line-height:1.5}.hub-card button{margin-top:auto;width:100%;height:39px;border-radius:9px;border:1px solid #1e506b;background:#0a2030;color:#53d7fa;font-size:10px;font-weight:800}.hub-card.locked button{color:#778994}.hub-module{display:none}.hub-module-header{display:flex;align-items:center;gap:10px;padding:12px 0 14px}.hub-back{border:1px solid #285b76;background:#0b2333;color:#55d9ff;border-radius:9px;padding:9px 12px;font-size:11px;font-weight:900}.hub-module-title{font-size:25px;font-weight:900}.hub-module-sub{color:#8fb6cb;font-size:10px;margin-top:3px}.hub-placeholder{background:#081a29;border:1px solid #24506c;border-radius:16px;padding:45px;text-align:center;color:#9bb7c7}.hub-modal{position:fixed;inset:0;z-index:99999;background:#000b;display:none;align-items:center;justify-content:center;padding:20px}.hub-modal-box{width:min(370px,94vw);background:#081827;border:1px solid #2b5870;border-radius:18px;padding:23px;text-align:center}.hub-modal-box h3{margin:0 0 8px}.hub-modal-box p{color:#9bb7c6;font-size:12px;line-height:1.6}.hub-modal-actions{display:flex;gap:9px;margin-top:17px}.hub-modal-actions button{flex:1;height:42px;border-radius:9px;font-weight:800}.hub-cancel{background:#132635;color:#b8d1de;border:1px solid #2a4c61}.hub-danger{background:#dc2626;color:#fff;border:0}.production-host{display:none;padding:0 0 25px}.production-host .app{max-width:1200px!important;width:100%}
-@media(max-width:900px){.hub-sidebar{width:180px}.hub-main{margin-left:180px}.hub-kpis{grid-template-columns:repeat(2,1fr)}.hub-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.hub-sidebar{width:100%;height:auto;top:auto;bottom:0;padding:4px;border-top:1px solid #1b3b52;border-right:0}.hub-brand{display:none}.hub-nav{flex-direction:row}.hub-nav-btn{min-height:47px;flex:1;justify-content:center;flex-direction:column;gap:1px;padding:4px 1px;font-size:7px}.hub-nav-btn:nth-child(n+5){display:none}.hub-nav-icon{font-size:15px}.hub-lock{display:none}.hub-main{margin-left:0;padding-bottom:55px}.hub-topbar{padding:0 9px}.hub-content{padding:19px 11px 75px}.hub-hero{flex-direction:column;align-items:flex-start}.hub-hero h1{font-size:28px}.hub-cards{grid-template-columns:1fr}.hub-module-title{font-size:20px}.hub-module-header{align-items:flex-start;flex-wrap:wrap}}
-</style><style>body{padding:0!important;background:#030a12!important}#hubApp .production-host .app{width:100%;max-width:1200px!important}</style></head><body><div id="hubLogin"><div class="hub-login-card"><img src="./icon-192.png" alt="RELAY-3 TEAM HUB"><h1>Welcome to RELAY-3</h1><div class="hub-login-sub">Select your name to continue</div><label class="hub-login-label" for="hubUser">OPERATOR / USER</label><select id="hubUser" class="hub-login-select"><option>Loading...</option></select><button class="hub-continue" onclick="hubLogin()">CONTINUE</button><div id="hubConnection" class="hub-connection">● CONNECTING TO R3 BACKEND</div></div></div><div id="hubApp" style="display:none"><div class="hub-layout"><aside class="hub-sidebar"><div class="hub-brand"><img src="./icon-192.png"><div><div class="hub-brand-title">RELAY-3 TEAM HUB</div><div class="hub-brand-sub">Operator & Production</div></div></div><nav class="hub-nav"><button class="hub-nav-btn" onclick="showHome()"><span class="hub-nav-icon">🏠</span><span>Home</span></button><button class="hub-nav-btn" data-module="checkPosition" onclick="openHubModule('checkPosition')"><span class="hub-nav-icon">📋</span><span>Check Position</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="myDueHistory" onclick="openHubModule('myDueHistory')"><span class="hub-nav-icon">⏳</span><span>My Due History</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="monthlyReport" onclick="openHubModule('monthlyReport')"><span class="hub-nav-icon">📊</span><span>My Monthly Report</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="leaveEntry" onclick="openHubModule('leaveEntry')"><span class="hub-nav-icon">📝</span><span>Leave Entry</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="holidayList" onclick="openHubModule('holidayList')"><span class="hub-nav-icon">🏢</span><span>Company Holiday</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="shiftSchedule" onclick="openHubModule('shiftSchedule')"><span class="hub-nav-icon">📅</span><span>Check Shift Schedule</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="localFestival" onclick="openHubModule('localFestival')"><span class="hub-nav-icon">🪔</span><span>Local Festival</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="groupChat" onclick="openHubModule('groupChat')"><span class="hub-nav-icon">💬</span><span>Live Group Chat</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="productionDashboard" onclick="openHubModule('productionDashboard')"><span class="hub-nav-icon">🏭</span><span>Production Dashboard</span><span class="hub-lock"></span></button></nav></aside><main class="hub-main"><header class="hub-topbar"><div class="hub-top-title">Plant Control Center</div><div class="hub-profile-menu"><button class="hub-profile-btn" onclick="toggleProfileMenu()"><span id="hubAvatar">G</span>&nbsp;<span id="hubProfileName">Guest</span> ▾</button><div class="hub-menu" id="hubMenu"><button onclick="switchHubUser()">🔄 Switch User</button><button onclick="openLogoutModal()">🚪 Logout</button></div></div></header><section id="hubHome" class="hub-content"><div class="hub-hero"><div><div class="hub-eyebrow">RELAY-3 TEAM HUB</div><h1>Good day, <span id="hubWelcome">Guest</span> 👋</h1><div class="hub-date" id="hubDate">-</div></div><div class="hub-badge">R3 connected</div></div><div class="hub-kpis"><div class="hub-kpi"><div class="hub-kpi-label">Duty Status</div><div class="hub-kpi-value hub-cyan" id="hubDuty">-</div><div class="hub-kpi-sub">Today's lineup entries</div></div><div class="hub-kpi"><div class="hub-kpi-label">Production</div><div class="hub-kpi-value hub-yellow" id="hubProduction">-</div><div class="hub-kpi-sub">Current shift</div></div><div class="hub-kpi"><div class="hub-kpi-label">Remaining</div><div class="hub-kpi-value hub-orange" id="hubRemaining">-</div><div class="hub-kpi-sub">Equivalent sheets</div></div><div class="hub-kpi"><div class="hub-kpi-label">Access</div><div class="hub-kpi-value hub-green" id="hubAccess">0</div><div class="hub-kpi-sub">Modules enabled</div></div></div><h2 class="hub-section-title">Quick Access</h2><div class="hub-cards"><div class="hub-card" data-card="checkPosition"><div class="hub-card-icon">📋</div><h3>Check Position</h3><p>Open Check Position from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('checkPosition')">Open</button></div><div class="hub-card" data-card="myDueHistory"><div class="hub-card-icon">⏳</div><h3>My Due History</h3><p>Open My Due History from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('myDueHistory')">Open</button></div><div class="hub-card" data-card="monthlyReport"><div class="hub-card-icon">📊</div><h3>My Monthly Report</h3><p>Open My Monthly Report from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('monthlyReport')">Open</button></div><div class="hub-card" data-card="leaveEntry"><div class="hub-card-icon">📝</div><h3>Leave Entry</h3><p>Open Leave Entry from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('leaveEntry')">Open</button></div><div class="hub-card" data-card="holidayList"><div class="hub-card-icon">🏢</div><h3>Company Holiday</h3><p>Open Company Holiday from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('holidayList')">Open</button></div><div class="hub-card" data-card="shiftSchedule"><div class="hub-card-icon">📅</div><h3>Check Shift Schedule</h3><p>Open Check Shift Schedule from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('shiftSchedule')">Open</button></div><div class="hub-card" data-card="localFestival"><div class="hub-card-icon">🪔</div><h3>Local Festival</h3><p>Open Local Festival from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('localFestival')">Open</button></div><div class="hub-card" data-card="groupChat"><div class="hub-card-icon">💬</div><h3>Live Group Chat</h3><p>Open Live Group Chat from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('groupChat')">Open</button></div><div class="hub-card" data-card="productionDashboard"><div class="hub-card-icon">🏭</div><h3>Production Dashboard</h3><p>Open Production Dashboard from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('productionDashboard')">Open</button></div></div></section><section id="hubOtherModule" class="hub-content hub-module"><div class="hub-module-header"><button class="hub-back" onclick="showHome()">← Main Dashboard</button><div><div class="hub-module-title" id="otherTitle">Module</div><div class="hub-module-sub">Relay-3 Team Hub</div></div></div><div class="hub-placeholder"><div style="font-size:34px" id="otherIcon">📋</div><h2>Access Enabled</h2><p id="otherMessage">This module will be connected next.</p></div></section><section id="productionHost" class="production-host"><div style="padding:12px 8px"><button class="hub-back" onclick="showHome()">← Main Dashboard</button></div>
-
-
+const productionHTML = `
 <div class="app">
-
-
-<!-- =================================================
-     TARGET PANEL
-================================================= -->
 
 <div class="target-panel">
 
+<div class="top-bar">
+<span id="bannerShift">Shift A</span>
+<span id="bannerDate">-</span>
+</div>
 
-  <div class="top-bar">
+<div class="req-box">
+<div class="req-value" id="topReqSheetsVal">SETUP REQUIRED</div>
+<span class="req-label">TOTAL REQUIRED SHEETS</span>
+</div>
 
-    <span id="bannerShift">
-      Shift A
-    </span>
+<div class="kpi-grid">
 
-    <span id="bannerDate">
-      -
-    </span>
+<div class="kpi">
+PRODUCED EQ. SHEETS
+<span class="kpi-value" id="bannerProduced">-</span>
+</div>
 
-  </div>
+<div class="kpi">
+REMAINING SHEETS
+<span class="kpi-value" id="bannerReqSheet">-</span>
+</div>
 
-
-  <div class="req-box">
-
-    <div
-      class="req-value"
-      id="topReqSheetsVal"
-    >
-      SETUP REQUIRED
-    </div>
-
-    <span class="req-label">
-      TOTAL REQUIRED SHEETS
-    </span>
-
-  </div>
-
-
-  <div class="kpi-grid">
-
-
-    <div class="kpi">
-
-      PRODUCED EQ. SHEETS
-
-      <span
-        class="kpi-value"
-        id="bannerProduced"
-      >
-        -
-      </span>
-
-    </div>
-
-
-    <div class="kpi">
-
-      REMAINING SHEETS
-
-      <span
-        class="kpi-value"
-        id="bannerReqSheet"
-      >
-        -
-      </span>
-
-    </div>
-
-
-    <div class="kpi">
-
-      REQUIRED / HR
-
-      <span
-        class="kpi-value"
-        id="bannerReqHr"
-      >
-        -
-      </span>
-
-    </div>
-
-
-  </div>
-
-
-  <div class="meta-row">
-
-    <span>
-
-      Target Size:
-
-      <strong
-        id="bannerTargetSize"
-      >
-        -
-      </strong>
-
-      m
-
-    </span>
-
-
-    <span>
-
-      SFT:
-
-      <strong
-        id="bannerSft"
-      >
-        -
-      </strong>
-
-    </span>
-
-  </div>
-
-
-  <div
-    class="hours-banner"
-    id="bannerTimeLeft"
-  >
-    8 HOURS AVAILABLE
-  </div>
-
+<div class="kpi">
+REQUIRED / HR
+<span class="kpi-value" id="bannerReqHr">-</span>
+</div>
 
 </div>
 
+<div class="meta-row">
 
+<span>
+Target Size:
+<strong id="bannerTargetSize">-</strong> m
+</span>
 
-<!-- =================================================
-     MASTER SETTINGS
-================================================= -->
+<span>
+SFT:
+<strong id="bannerSft">-</strong>
+</span>
+
+</div>
+
+<div class="hours-banner" id="bannerTimeLeft">
+8 HOURS AVAILABLE
+</div>
+
+</div>
+
 
 <div class="card">
 
+<div class="section-title">
+⚙️ Master Settings
+</div>
 
-  <div class="section-title">
+<div class="form-row">
 
-    <i class="fa-solid fa-gears"></i>
+<div class="form-group">
+<label>Target Production (MT)</label>
+<input type="text"
+id="setConfigTarget"
+inputmode="decimal"
+placeholder="Enter Target MT"
+autocomplete="off">
+</div>
 
-    Master Settings
-
-  </div>
-
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        Target Production (MT)
-      </label>
-
-      <input
-        type="text"
-        id="setConfigTarget"
-        inputmode="decimal"
-        placeholder="Enter Target MT"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Target Size (m)
-      </label>
-
-      <input
-        type="text"
-        id="setConfigTargetSize"
-        inputmode="decimal"
-        placeholder="Enter Target Size"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <div class="form-group">
-
-    <label>
-      Batch Weight (kg)
-    </label>
-
-    <input
-      type="text"
-      id="setConfigBatch"
-      inputmode="decimal"
-      placeholder="Enter Batch Weight"
-      autocomplete="off"
-    >
-
-  </div>
-
-
-  <div
-    class="progress-wrap"
-    id="settingsProgressWrap"
-  >
-
-    <div
-      class="progress-bar"
-      id="settingsProgress"
-    ></div>
-
-  </div>
-
-
-  <button
-    class="btn btn-settings"
-    id="settingsBtn"
-    onclick="saveSettingsData()"
-  >
-
-    <i class="fa-solid fa-floppy-disk"></i>
-
-    SAVE SETTINGS
-
-  </button>
-
+<div class="form-group">
+<label>Target Size (m)</label>
+<input type="text"
+id="setConfigTargetSize"
+inputmode="decimal"
+placeholder="Enter Target Size"
+autocomplete="off">
+</div>
 
 </div>
 
+<div class="form-group">
+<label>Batch Weight (kg)</label>
+<input type="text"
+id="setConfigBatch"
+inputmode="decimal"
+placeholder="Enter Batch Weight"
+autocomplete="off">
+</div>
 
+<div class="progress-wrap" id="settingsProgressWrap">
+<div class="progress-bar" id="settingsProgress"></div>
+</div>
 
-<!-- =================================================
-     HOURLY PRODUCTION ENTRY
-================================================= -->
+<button class="btn btn-settings"
+id="settingsBtn"
+onclick="saveSettingsData()">
+💾 SAVE SETTINGS
+</button>
+
+</div>
+
 
 <div class="card">
 
-
-  <div
-    class="section-title"
-    id="formTitle"
-  >
-
-    <i class="fa-solid fa-pen-to-square"></i>
-
-    Hourly Production Entry
-
-  </div>
-
-
-  <input
-    type="hidden"
-    id="editRowIndex"
-  >
-
-
-  <!-- OPERATOR -->
-
-  <div class="form-group">
-
-    <label>
-      Operator Name
-    </label>
-
-    <input
-      type="text"
-      id="opName"
-      placeholder="Enter operator name"
-      autocomplete="off"
-    >
-
-  </div>
-
-
-  <!-- SHIFT + HOUR -->
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        Shift
-      </label>
-
-      <input
-        type="text"
-        id="opShift"
-        value="A"
-        maxlength="1"
-        placeholder="A / B / C"
-        autocomplete="off"
-        oninput="
-          this.value =
-          this.value.toUpperCase();
-          renderDashboard();
-        "
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Production Hour
-      </label>
-
-      <!-- ONLY DROPDOWN IN ENTIRE APP -->
-
-      <select id="opHour">
-
-        <option value="1st Hour">
-          1st Hour
-        </option>
-
-        <option value="2nd Hour">
-          2nd Hour
-        </option>
-
-        <option value="3rd Hour">
-          3rd Hour
-        </option>
-
-        <option value="4th Hour">
-          4th Hour
-        </option>
-
-        <option value="5th Hour">
-          5th Hour
-        </option>
-
-        <option value="6th Hour">
-          6th Hour
-        </option>
-
-        <option value="7th Hour">
-          7th Hour
-        </option>
-
-        <option value="8th Hour">
-          8th Hour
-        </option>
-
-      </select>
-
-    </div>
-
-
-  </div>
-
-
-  <!-- SIZE -->
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        1st Size (m)
-      </label>
-
-      <input
-        type="text"
-        id="opSize1"
-        inputmode="decimal"
-        value="6"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        2nd Size (m)
-      </label>
-
-      <input
-        type="text"
-        id="opSize2"
-        inputmode="decimal"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <!-- SHEETS -->
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        1st Size Sheets
-      </label>
-
-      <input
-        type="text"
-        id="opS1"
-        inputmode="numeric"
-        placeholder="Enter sheets"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        2nd Size Sheets
-      </label>
-
-      <input
-        type="text"
-        id="opS2"
-        inputmode="numeric"
-        placeholder="Enter sheets"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <!-- BEATER + MOULDING -->
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        Beater
-      </label>
-
-      <input
-        type="text"
-        id="opBeater"
-        inputmode="decimal"
-        placeholder="Enter Beater"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        Moulding
-      </label>
-
-      <input
-        type="text"
-        id="opMoulding"
-        inputmode="decimal"
-        placeholder="Enter Moulding"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <!-- BD + GSR -->
-
-  <div class="form-row">
-
-
-    <div class="form-group">
-
-      <label>
-        B/D
-      </label>
-
-      <input
-        type="text"
-        id="opBD"
-        inputmode="decimal"
-        placeholder="Minutes"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-    <div class="form-group">
-
-      <label>
-        GSR
-      </label>
-
-      <input
-        type="text"
-        id="opGSR"
-        inputmode="numeric"
-        placeholder="GSR sheets"
-        autocomplete="off"
-      >
-
-    </div>
-
-
-  </div>
-
-
-  <div
-    class="progress-wrap"
-    id="submitProgressWrap"
-  >
-
-    <div
-      class="progress-bar"
-      id="submitProgress"
-    ></div>
-
-  </div>
-
-
-  <button
-    class="btn btn-save"
-    id="submitBtn"
-    onclick="submitProductionEntry()"
-  >
-
-    <i class="fa-solid fa-cloud-arrow-up"></i>
-
-    SUBMIT HOURLY DATA
-
-  </button>
-
-
-  <button
-    class="btn btn-cancel"
-    id="cancelBtn"
-    onclick="resetForm()"
-  >
-
-    <i class="fa-solid fa-xmark"></i>
-
-    CANCEL EDIT
-
-  </button>
-
+<div class="section-title" id="formTitle">
+📝 Hourly Production Entry
+</div>
+
+<input type="hidden" id="editRowIndex">
+
+
+<div class="form-group">
+<label>Operator Name</label>
+<input type="text"
+id="opName"
+placeholder="Enter operator name"
+autocomplete="off">
+</div>
+
+
+<div class="form-row">
+
+<div class="form-group">
+<label>Shift</label>
+<input type="text"
+id="opShift"
+value="A"
+maxlength="1"
+placeholder="A / B / C"
+autocomplete="off"
+oninput="this.value=this.value.toUpperCase();renderDashboard();">
+</div>
+
+<div class="form-group">
+<label>Production Hour</label>
+
+<select id="opHour">
+
+<option value="1st Hour">1st Hour</option>
+<option value="2nd Hour">2nd Hour</option>
+<option value="3rd Hour">3rd Hour</option>
+<option value="4th Hour">4th Hour</option>
+<option value="5th Hour">5th Hour</option>
+<option value="6th Hour">6th Hour</option>
+<option value="7th Hour">7th Hour</option>
+<option value="8th Hour">8th Hour</option>
+
+</select>
+
+</div>
 
 </div>
 
 
+<div class="form-row">
 
-<!-- =================================================
-     PRODUCTION LOG
-================================================= -->
+<div class="form-group">
+<label>1st Size (m)</label>
+<input type="text"
+id="opSize1"
+inputmode="decimal"
+value="6"
+autocomplete="off">
+</div>
+
+<div class="form-group">
+<label>2nd Size (m)</label>
+<input type="text"
+id="opSize2"
+inputmode="decimal"
+autocomplete="off">
+</div>
+
+</div>
+
+
+<div class="form-row">
+
+<div class="form-group">
+<label>1st Size Sheets</label>
+<input type="text"
+id="opS1"
+inputmode="numeric"
+placeholder="Enter sheets"
+autocomplete="off">
+</div>
+
+<div class="form-group">
+<label>2nd Size Sheets</label>
+<input type="text"
+id="opS2"
+inputmode="numeric"
+placeholder="Enter sheets"
+autocomplete="off">
+</div>
+
+</div>
+
+
+<div class="form-row">
+
+<div class="form-group">
+<label>Beater</label>
+<input type="text"
+id="opBeater"
+inputmode="decimal"
+placeholder="Enter Beater"
+autocomplete="off">
+</div>
+
+<div class="form-group">
+<label>Moulding</label>
+<input type="text"
+id="opMoulding"
+inputmode="decimal"
+placeholder="Enter Moulding"
+autocomplete="off">
+</div>
+
+</div>
+
+
+<div class="form-row">
+
+<div class="form-group">
+<label>B/D</label>
+<input type="text"
+id="opBD"
+inputmode="decimal"
+placeholder="Minutes"
+autocomplete="off">
+</div>
+
+<div class="form-group">
+<label>GSR</label>
+<input type="text"
+id="opGSR"
+inputmode="numeric"
+placeholder="GSR sheets"
+autocomplete="off">
+</div>
+
+</div>
+
+
+<div class="progress-wrap" id="submitProgressWrap">
+<div class="progress-bar" id="submitProgress"></div>
+</div>
+
+
+<button class="btn btn-save"
+id="submitBtn"
+onclick="submitProductionEntry()">
+☁️ SUBMIT HOURLY DATA
+</button>
+
+<button class="btn btn-cancel"
+id="cancelBtn"
+onclick="resetForm()">
+✕ CANCEL EDIT
+</button>
+
+</div>
+
 
 <div class="card">
 
-
-  <div class="section-title">
-
-    <i class="fa-solid fa-chart-line"></i>
-
-    Production Log & Metrics
-
-  </div>
-
-
-  <button
-    class="btn btn-refresh"
-    id="refreshBtn"
-    onclick="loadDashboardData()"
-  >
-
-    <i
-      class="fa-solid fa-rotate"
-      id="refreshIcon"
-    ></i>
-
-    REFRESH DATA
-
-  </button>
-
-
-  <div class="table-wrap">
-
-
-    <table
-      class="production-table"
-    >
-
-
-      <thead>
-
-        <tr>
-
-          <th>
-            Hour
-          </th>
-
-          <th>
-            Size (m)
-          </th>
-
-          <th>
-            Sheets
-          </th>
-
-          <th>
-            Beater
-          </th>
-
-          <th>
-            B/D
-          </th>
-
-          <th>
-            GSR
-          </th>
-
-          <th>
-            Output
-          </th>
-
-          <th>
-            Input
-          </th>
-
-          <th>
-            ME%
-          </th>
-
-          <th>
-            ROP
-          </th>
-
-          <th>
-            Moulding
-          </th>
-
-          <th>
-            Moulding MT
-          </th>
-
-          <th>
-            Action
-          </th>
-
-        </tr>
-
-      </thead>
-
-
-      <tbody
-        id="productionTableBody"
-      >
-
-        <tr>
-
-          <td
-            colspan="13"
-            style="
-              padding:20px;
-              color:#00ffff;
-            "
-          >
-
-            Loading data...
-
-          </td>
-
-        </tr>
-
-      </tbody>
-
-
-    </table>
-
-
-  </div>
-
-
-  <!-- METRICS -->
-
-  <div class="metrics-grid">
-
-
-    <div class="metric-box">
-
-      <span class="metric-label">
-        TOTAL PRODUCTION
-      </span>
-
-      <span
-        class="metric-value"
-        id="totalProduction"
-      >
-        0.00 MT
-      </span>
-
-    </div>
-
-
-    <div class="metric-box">
-
-      <span class="metric-label">
-        TOTAL INPUT
-      </span>
-
-      <span
-        class="metric-value"
-        id="totalInput"
-      >
-        0.00 MT
-      </span>
-
-    </div>
-
-
-    <div class="metric-box">
-
-      <span class="metric-label">
-        OVERALL ME%
-      </span>
-
-      <span
-        class="metric-value"
-        id="overallME"
-      >
-        0.0%
-      </span>
-
-    </div>
-
-
-    <div class="metric-box">
-
-      <span class="metric-label">
-        OVERALL ROP
-      </span>
-
-      <span
-        class="metric-value"
-        id="overallROP"
-      >
-        0.00 MT/hr
-      </span>
-
-    </div>
-
-
-  </div>
-
-
-  <!-- GSR -->
-
-  <div class="gsr-card">
-
-
-    <div class="gsr-title">
-
-      <i
-        class="fa-solid fa-triangle-exclamation"
-      ></i>
-
-      TOTAL GSR SHEETS
-
-    </div>
-
-
-    <div
-      class="gsr-value"
-      id="totalGSR"
-    >
-      0 SHEETS
-    </div>
-
-
-  </div>
-
-
-  <!-- DELETE ALL -->
-
-  <button
-    class="delete-all"
-    id="deleteAllBtn"
-    onclick="openDeleteAllModal()"
-  >
-
-    <i
-      class="fa-solid fa-trash-can"
-    ></i>
-
-    DELETE ALL HOURS
-
-  </button>
-
-
-  <!-- REPORT -->
-
-  <div class="report-grid">
-
-
-    <button
-      class="report-btn whatsapp-report"
-      onclick="sendShiftWhatsApp()"
-    >
-
-      <i
-        class="fa-brands fa-whatsapp"
-      ></i>
-
-      WHATSAPP SHIFT REPORT
-
-    </button>
-
-
-    <button
-      class="report-btn pdf-report"
-      onclick="generateShiftPDF()"
-    >
-
-      <i
-        class="fa-solid fa-file-pdf"
-      ></i>
-
-      PDF SHIFT REPORT
-
-    </button>
-
-
-  </div>
-
+<div class="section-title">
+📈 Production Log & Metrics
+</div>
+
+<button class="btn btn-refresh"
+id="refreshBtn"
+onclick="loadDashboardData()">
+🔄 REFRESH DATA
+</button>
+
+
+<div class="table-wrap">
+
+<table class="production-table">
+
+<thead>
+
+<tr>
+<th>Hour</th>
+<th>Size (m)</th>
+<th>Sheets</th>
+<th>Beater</th>
+<th>B/D</th>
+<th>GSR</th>
+<th>Output</th>
+<th>Input</th>
+<th>ME%</th>
+<th>ROP</th>
+<th>Moulding</th>
+<th>Moulding MT</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="productionTableBody">
+
+<tr>
+<td colspan="13"
+style="padding:20px;color:#00ffff;">
+Loading data...
+</td>
+</tr>
+
+</tbody>
+
+</table>
 
 </div>
 
 
+<div class="metrics-grid">
+
+<div class="metric-box">
+<span class="metric-label">TOTAL PRODUCTION</span>
+<span class="metric-value" id="totalProduction">
+0.00 MT
+</span>
+</div>
+
+<div class="metric-box">
+<span class="metric-label">TOTAL INPUT</span>
+<span class="metric-value" id="totalInput">
+0.00 MT
+</span>
+</div>
+
+<div class="metric-box">
+<span class="metric-label">OVERALL ME%</span>
+<span class="metric-value" id="overallME">
+0.0%
+</span>
+</div>
+
+<div class="metric-box">
+<span class="metric-label">OVERALL ROP</span>
+<span class="metric-value" id="overallROP">
+0.00 MT/hr
+</span>
+</div>
+
 </div>
 
 
+<div class="gsr-card">
 
-<!-- =================================================
-     CUSTOM DELETE MODAL
-================================================= -->
+<div class="gsr-title">
+⚠️ TOTAL GSR SHEETS
+</div>
 
-<div
-  class="modal-overlay"
-  id="confirmModal"
->
-
-
-  <div class="modal-box">
-
-
-    <div class="modal-icon">
-
-      <i
-        class="fa-solid fa-triangle-exclamation"
-      ></i>
-
-    </div>
-
-
-    <div
-      class="modal-title"
-      id="confirmTitle"
-    >
-      Are you sure?
-    </div>
-
-
-    <div
-      class="modal-message"
-      id="confirmMessage"
-    >
-      Please confirm.
-    </div>
-
-
-    <div class="modal-buttons">
-
-
-      <button
-        class="modal-cancel"
-        onclick="closeConfirmModal()"
-      >
-        CANCEL
-      </button>
-
-
-      <button
-        class="modal-delete"
-        id="confirmActionBtn"
-      >
-        DELETE
-      </button>
-
-
-    </div>
-
-
-  </div>
+<div class="gsr-value" id="totalGSR">
+0 SHEETS
+</div>
 
 </div>
 
+
+<button class="delete-all"
+id="deleteAllBtn"
+onclick="openDeleteAllModal()">
+🗑️ DELETE ALL HOURS
+</button>
+
+
+<div class="report-grid">
+
+<button class="report-btn whatsapp-report"
+onclick="sendShiftWhatsApp()">
+📱 WHATSAPP SHIFT REPORT
+</button>
+
+<button class="report-btn pdf-report"
+onclick="generateShiftPDF()">
+📄 PDF SHIFT REPORT
+</button>
+
+</div>
+
+</div>
+
+
+<div class="modal-overlay"
+id="confirmModal">
+
+<div class="modal-box">
+
+<div class="modal-icon">⚠️</div>
+
+<div class="modal-title"
+id="confirmTitle">
+Are you sure?
+</div>
+
+<div class="modal-message"
+id="confirmMessage">
+Please confirm.
+</div>
+
+<div class="modal-buttons">
+
+<button class="modal-cancel"
+onclick="closeConfirmModal()">
+CANCEL
+</button>
+
+<button class="modal-delete"
+id="confirmActionBtn">
+DELETE
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 
 <div id="toast"></div>
 
+</div>
+`;
 
+window.__loadProductionHTML = function(){
 
-</section></main></div></div><div class="hub-modal" id="hubLockModal"><div class="hub-modal-box"><h3>🔒 Module Locked</h3><p id="hubLockMessage">This module is currently disabled.</p><div class="hub-modal-actions"><button class="hub-cancel" onclick="closeHubModal()">CLOSE</button></div></div></div><div class="hub-modal" id="hubLogoutModal"><div class="hub-modal-box"><h3>Logout?</h3><p>Are you sure you want to logout from RELAY-3 TEAM HUB?</p><div class="hub-modal-actions"><button class="hub-cancel" onclick="closeLogoutModal()">CANCEL</button><button class="hub-danger" onclick="confirmHubLogout()">LOGOUT</button></div></div></div><script>
-const R3_URL="https://script.google.com/macros/s/AKfycbyHQ5BMKG-IHIGMCqL4N2efVOshdsP34EY3Gu054YwmhC5qYZBNyEkRvW0_3SAOmMK8fA/exec";const HUB_KEY="relay3_team_hub_user";let r3Data=null;let permissions={};
-function r3JSONP(params={}){return new Promise((resolve,reject)=>{const cb="r3hub_"+Date.now()+"_"+Math.random().toString(36).slice(2),s=document.createElement("script"),q=new URLSearchParams({...params,callback:cb}),timer=setTimeout(()=>{cleanup();reject(new Error("R3 timeout"))},15000);window[cb]=d=>{cleanup();resolve(d)};s.onerror=()=>{cleanup();reject(new Error("R3 backend error"))};s.src=R3_URL+"?"+q.toString();document.head.appendChild(s);function cleanup(){clearTimeout(timer);delete window[cb];s.remove()}})}
-async function bootHub(){try{r3Data=await r3JSONP({action:"getDashboardData"});const names=["Guest"];(Array.isArray(r3Data.operators)?r3Data.operators:[]).forEach(op=>{const n=typeof op==="string"?op:op&&op.name;if(n&&!names.includes(n))names.push(n)});const sel=document.getElementById("hubUser");sel.innerHTML="";names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sel.appendChild(o)});const saved=localStorage.getItem(HUB_KEY);if(saved&&names.includes(saved)){sel.value=saved;showDashboard(saved)}else document.getElementById("hubLogin").style.display="flex";document.getElementById("hubConnection").textContent="● R3 BACKEND CONNECTED"}catch(e){console.error(e);document.getElementById("hubConnection").textContent="● R3 BACKEND CONNECTION ERROR";document.getElementById("hubConnection").classList.add("error");document.getElementById("hubUser").innerHTML='<option value="Guest">Guest</option>';document.getElementById("hubLogin").style.display="flex"}}
-function hubLogin(){const u=document.getElementById("hubUser").value;if(!u||u==="Loading...")return;localStorage.setItem(HUB_KEY,u);showDashboard(u)}
-function showDashboard(u){document.getElementById("hubLogin").style.display="none";document.getElementById("hubApp").style.display="block";document.getElementById("hubProfileName").textContent=u;document.getElementById("hubWelcome").textContent=u;document.getElementById("hubAvatar").textContent=u.charAt(0).toUpperCase();document.getElementById("hubDate").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});applyHubPermissions();updateHubKPIs();showHome()}
-function getActivePermissions(){const u=(localStorage.getItem(HUB_KEY)||"").trim().toLowerCase();return u==="guest"?(r3Data&&r3Data.guestSecurity)||{}:(r3Data&&r3Data.security)||{}}
-function isEnabled(v){return v===true||String(v).toLowerCase()==="yes"}
-function applyHubPermissions(){const a=getActivePermissions();permissions={checkPosition:isEnabled(a.checkPosition),myDueHistory:isEnabled(a.myDueHistory),monthlyReport:isEnabled(a.monthlyReport),leaveEntry:isEnabled(a.leaveEntry),holidayList:isEnabled(a.holidayList),shiftSchedule:isEnabled(a.shiftSchedule),localFestival:isEnabled(a.localFestival),groupChat:isEnabled(a.groupChat),productionDashboard:isEnabled(a.productionDashboard)};let count=0;Object.entries(permissions).forEach(([m,on])=>{if(on)count++;const n=document.querySelector(`.hub-nav-btn[data-module="${m}"]`),c=document.querySelector(`.hub-card[data-card="${m}"]`);if(n){n.classList.toggle("locked",!on);const l=n.querySelector(".hub-lock");if(l)l.textContent=on?"":"🔒"}if(c){c.classList.toggle("locked",!on);const b=c.querySelector("button");if(b)b.textContent=on?"Open":"🔒 Disabled"}});document.getElementById("hubAccess").textContent=count}
-function updateHubKPIs(){const rows=r3Data&&r3Data.board&&Array.isArray(r3Data.board.rows)?r3Data.board.rows:[];document.getElementById("hubDuty").textContent=rows.length||"-"}
-function showHome(){document.getElementById("hubHome").style.display="block";document.getElementById("hubOtherModule").style.display="none";document.getElementById("productionHost").style.display="none";window.scrollTo({top:0,behavior:"smooth"})}
-const moduleInfo={checkPosition:["Check Position","📋","Today's R3 operator lineup and assigned positions."],myDueHistory:["My Due History","⏳","Position-wise due history."],monthlyReport:["My Monthly Report","📊","Attendance and position performance."],leaveEntry:["Leave Entry","📝","Leave entry and submission."],holidayList:["Company Holiday","🏢","Company holidays and relay shifts."],shiftSchedule:["Check Shift Schedule","📅","Relay shift schedule."],localFestival:["Local Festival","🪔","Local festival dates and shifts."],groupChat:["Live Group Chat","💬","R3 operator group communication."],productionDashboard:["Production Dashboard","🏭","Production, ME, ROP and hourly manufacturing dashboard."]};
-function openHubModule(m){if(!permissions[m]){document.getElementById("hubLockMessage").textContent="This module is currently disabled by the Security / Guest permission settings.";document.getElementById("hubLockModal").style.display="flex";return}if(m==="productionDashboard"){document.getElementById("hubHome").style.display="none";document.getElementById("hubOtherModule").style.display="none";document.getElementById("productionHost").style.display="block";window.scrollTo({top:0,behavior:"smooth"});if(typeof window.startProductionModule==="function")window.startProductionModule();return}const x=moduleInfo[m];document.getElementById("hubHome").style.display="none";document.getElementById("productionHost").style.display="none";document.getElementById("hubOtherModule").style.display="block";document.getElementById("otherTitle").textContent=x[0];document.getElementById("otherIcon").textContent=x[1];document.getElementById("otherMessage").textContent=x[2]+" This module will be connected in the next integration step.";window.scrollTo({top:0,behavior:"smooth"})}
-function closeHubModal(){document.getElementById("hubLockModal").style.display="none"}function toggleProfileMenu(){document.getElementById("hubMenu").classList.toggle("show")}document.addEventListener("click",e=>{if(!e.target.closest(".hub-profile-menu"))document.getElementById("hubMenu").classList.remove("show")});function switchHubUser(){localStorage.removeItem(HUB_KEY);document.getElementById("hubMenu").classList.remove("show");document.getElementById("hubApp").style.display="none";document.getElementById("hubLogin").style.display="flex";document.getElementById("hubUser").value="Guest"}function openLogoutModal(){document.getElementById("hubMenu").classList.remove("show");document.getElementById("hubLogoutModal").style.display="flex"}function closeLogoutModal(){document.getElementById("hubLogoutModal").style.display="none"}function confirmHubLogout(){localStorage.removeItem(HUB_KEY);closeLogoutModal();document.getElementById("hubApp").style.display="none";document.getElementById("hubLogin").style.display="flex";document.getElementById("hubUser").value="Guest";showHome()}
-bootHub();
+ const host=document.getElementById("productionApp");
+
+ if(!host) return;
+
+ if(host.dataset.loaded==="yes") return;
+
+ host.innerHTML=productionHTML;
+
+ host.dataset.loaded="yes";
+
+};
+
+window.loadProduction=function(){
+
+ window.__loadProductionHTML();
+
+ if(typeof window.startProductionModule==="function"){
+   window.startProductionModule();
+ }
+
+};
+
+})();
 </script>
 <script>
 
@@ -2009,7 +2322,7 @@ bootHub();
    CONFIG
 ===================================================== */
 
-const SCRIPT_URL =
+const PROD_SCRIPT_URL =
 "https://script.google.com/macros/s/AKfycbxybGks2744Wmc3go7qwd7BJ_kEi_i577zQbaKyHX0Er3M7xssKxVmNpdep9ClMr3tHmw/exec";
 
 
@@ -2040,7 +2353,7 @@ let pendingDeleteRow =
    JSONP
 ===================================================== */
 
-function jsonp(
+function prodJsonp(
   url,
   callbackName
 ) {
@@ -2119,9 +2432,9 @@ function loadDashboardData() {
   showLoadingState();
 
 
-  jsonp(
+  prodJsonp(
 
-    SCRIPT_URL +
+    PROD_SCRIPT_URL +
     "?action=getDashboardData",
 
     "handleDashboardResponse"
@@ -3631,9 +3944,9 @@ function saveSettingsData() {
     };
 
 
-  jsonp(
+  prodJsonp(
 
-    SCRIPT_URL +
+    PROD_SCRIPT_URL +
 
     "?action=saveSettings" +
 
@@ -3892,7 +4205,7 @@ function submitProductionEntry() {
 
   let url =
 
-    SCRIPT_URL +
+    PROD_SCRIPT_URL +
 
     "?action=submitHourly" +
 
@@ -3965,7 +4278,7 @@ function submitProductionEntry() {
   }
 
 
-  jsonp(
+  prodJsonp(
 
     url,
 
@@ -4290,9 +4603,9 @@ function performDeleteRow(
     };
 
 
-  jsonp(
+  prodJsonp(
 
-    SCRIPT_URL +
+    PROD_SCRIPT_URL +
 
     "?action=deleteHourly" +
 
@@ -4454,9 +4767,9 @@ function performDeleteAll() {
     };
 
 
-  jsonp(
+  prodJsonp(
 
-    SCRIPT_URL +
+    PROD_SCRIPT_URL +
 
     "?action=deleteAllHours" +
 
@@ -5232,10 +5545,21 @@ function escapeHTML(
 }
 
 
-/* =====================================================
-   INITIAL LOAD
-===================================================== */
+window.startProductionModule = function(){
 
-window.startProductionModule = function() { loadDashboardData(); };
+  const host = document.getElementById("productionApp");
+  if(!host) return;
 
-</script></body></html>
+  if(host.dataset.loaded !== "yes" && typeof window.__loadProductionHTML === "function"){
+    window.__loadProductionHTML();
+  }
+
+  setTimeout(function(){
+    loadDashboardData();
+  },100);
+
+};
+</script>
+
+</body>
+</html>
