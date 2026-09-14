@@ -106,8 +106,14 @@ function openModule(module){
   };
   const item=modules[module];
   if(!item)return;
-  document.querySelector(".content").classList.add("hidden");
-  document.getElementById("moduleScreen").classList.add("active");
+  const dashboardContent = document.querySelector(".content");
+  const moduleScreen = document.getElementById("moduleScreen");
+
+  // Move the module screen outside the dashboard content before hiding it.
+  // Otherwise the module screen would also become hidden because it is a child of .content.
+  document.querySelector(".main").appendChild(moduleScreen);
+  dashboardContent.classList.add("hidden");
+  moduleScreen.classList.add("active");
   document.getElementById("moduleTitle").textContent=item.title;
   document.getElementById("moduleSub").textContent=item.sub;
   document.getElementById("moduleIcon").textContent=item.icon;
@@ -117,8 +123,15 @@ function openModule(module){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function backToDashboard(){
-  document.getElementById("moduleScreen").classList.remove("active");
-  document.querySelector(".content").classList.remove("hidden");
+  const moduleScreen = document.getElementById("moduleScreen");
+  const dashboardContent = document.querySelector(".content");
+
+  moduleScreen.classList.remove("active");
+
+  // Put the module screen back after the dashboard content for the next module.
+  dashboardContent.parentNode.insertBefore(moduleScreen, dashboardContent.nextSibling);
+  dashboardContent.classList.remove("hidden");
+
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
