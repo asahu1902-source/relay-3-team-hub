@@ -1,37 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#06101d">
-<meta name="description" content="RELAY-3 TEAM HUB">
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" href="./icon-192.png">
-<title>RELAY-3 TEAM HUB</title><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#030a12;color:#eef7ff}button,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
-#splash{position:fixed;inset:0;z-index:9999;background:#030a12;display:flex;align-items:center;justify-content:center;flex-direction:column}#splash img{width:145px;height:145px;object-fit:contain;animation:pulse 1.5s infinite}#splash h1{margin:18px 0 4px;font-size:25px}#splash p{margin:0;color:#69d9ff;font-size:12px}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.login-card{width:min(430px,94vw);background:#081827;border:1px solid #24506c;border-radius:28px;padding:30px;text-align:center;box-shadow:0 25px 80px #000b}.login-logo{width:110px;height:110px;object-fit:contain;margin-bottom:10px}.login-card h1{margin:0;font-size:27px}.login-sub{color:#8fb4ca;font-size:13px;margin:8px 0 28px}.login-label{display:block;text-align:left;color:#8fd7f3;font-size:11px;margin-bottom:7px}.login-select{width:100%;height:52px;border-radius:13px;border:1px solid #28607e;background:#06131f;color:#fff;padding:0 14px;outline:none}.continue-btn{width:100%;height:52px;margin-top:16px;border:0;border-radius:13px;background:#1dc4e9;color:#021019;font-weight:900}.connection{display:inline-block;margin-top:18px;padding:7px 12px;border-radius:20px;background:#06344a;color:#55d9ff;font-size:10px}.connection.error{background:#45151b;color:#ff7c7c}
-#app{min-height:100vh;display:none}.layout{display:flex;min-height:100vh}.sidebar{width:225px;flex-shrink:0;background:#06121e;border-right:1px solid #1b3b52;padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;align-items:center;gap:10px;padding:8px 8px 18px;border-bottom:1px solid #173448;margin-bottom:12px}.brand img{width:40px;height:40px;object-fit:contain}.brand-title{font-weight:900;font-size:13px}.brand-sub{color:#76a6bd;font-size:9px;margin-top:3px}.nav{display:flex;flex-direction:column;gap:5px}.nav-btn{width:100%;min-height:45px;border:0;background:transparent;color:#b9d0de;border-radius:9px;text-align:left;padding:9px 10px;display:flex;align-items:center;gap:10px;font-size:13px}.nav-btn:hover{background:#0b2131}.nav-btn.locked{color:#657987;background:#07141f}.nav-icon{width:22px;text-align:center;font-size:17px}.lock{margin-left:auto;font-size:13px}
-.main{flex:1;min-width:0}.topbar{height:65px;background:#061421;border-bottom:1px solid #1a3a50;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:50}.top-title{font-size:14px;font-weight:900}.profile-wrap{position:relative}.profile{display:flex;align-items:center;gap:9px;background:#0b2233;border:1px solid #1d4b67;padding:7px 8px;border-radius:13px}.avatar{width:30px;height:30px;border-radius:50%;background:#0c344a;display:flex;align-items:center;justify-content:center;color:#35d4ff;font-weight:900}.profile-name{font-size:12px;font-weight:900}.profile-role{font-size:9px;color:#7ea5b9}.profile-menu{position:absolute;right:0;top:54px;width:170px;background:#081827;border:1px solid #28516a;border-radius:13px;padding:7px;box-shadow:0 18px 50px #000b;display:none}.profile-menu button{width:100%;height:40px;border:0;border-radius:8px;background:transparent;color:#c9e2ef;text-align:left;padding:0 10px;font-size:12px}.profile-menu button:hover{background:#0d2739}.profile-menu .logout{color:#ff8a8a}.profile-trigger{border:0;background:transparent;color:inherit;display:flex;align-items:center;gap:9px;padding:0}
-.content{padding:28px 24px 50px;max-width:1400px;margin:auto}.eyebrow{color:#16c9f4;font-size:10px;font-weight:900;letter-spacing:1px}.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:20px}.hero h1{margin:7px 0 5px;font-size:38px;line-height:1.05}.hero-date{color:#91b4c8;font-size:12px}.backend-badge{background:#073049;color:#57d8ff;border-radius:20px;padding:7px 11px;font-size:9px}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}.kpi{background:#081a29;border:1px solid #21465d;border-radius:18px;padding:18px;min-height:100px}.kpi-label{color:#8fb6cb;font-size:10px}.kpi-value{font-size:28px;font-weight:900;margin-top:9px}.kpi-value.cyan{color:#25d0f4}.kpi-value.yellow{color:#facc15}.kpi-value.orange{color:#fb923c}.kpi-value.green{color:#34d399}.kpi-sub{margin-top:4px;color:#86a9bd;font-size:10px}
-.section-title{font-size:16px;margin:0 0 12px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#081a29;border:1px solid #1e4259;border-radius:18px;padding:18px;min-height:145px;display:flex;flex-direction:column;transition:.15s}.card:not(.locked-card):hover{transform:translateY(-2px);border-color:#2c718f}.card.locked-card{opacity:.58}.card-icon{font-size:22px;margin-bottom:12px}.card h3{margin:0;font-size:14px}.card p{color:#7896a8;font-size:10px;margin:8px 0 15px;line-height:1.5}.card-action{margin-top:auto;width:100%;height:40px;border-radius:9px;border:1px solid #1e506b;background:#0a2030;color:#9bb6c5;font-size:11px;font-weight:800}.card:not(.locked-card) .card-action{color:#53d7fa}.card.locked-card .card-action{color:#778994}
-.modal{position:fixed;inset:0;z-index:99999;background:#000b;display:none;align-items:center;justify-content:center;padding:20px}.modal-box{width:min(380px,94vw);background:#081827;border:1px solid #2b5870;border-radius:18px;padding:24px;text-align:center}.modal-box h3{margin:0 0 8px}.modal-box p{color:#9bb7c6;font-size:12px;line-height:1.6}.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions button{flex:1;height:42px;border-radius:9px;font-weight:800}.cancel{background:#132635;color:#b8d1de;border:1px solid #2a4c61}.confirm{background:#dc2626;color:#fff;border:0}
-@media(max-width:900px){.sidebar{width:190px}.kpis{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.layout{display:block}.sidebar{width:100%;height:auto;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:5px;border-right:0;border-top:1px solid #1b3b52}.brand{display:none}.nav{flex-direction:row;justify-content:space-around;gap:2px}.nav-btn{min-height:48px;width:auto;flex:1;padding:5px 2px;justify-content:center;flex-direction:column;gap:1px;text-align:center;font-size:8px}.nav-btn:nth-child(n+5){display:none}.nav-icon{font-size:16px}.lock{display:none}.topbar{padding:0 10px}.top-title{font-size:12px}.content{padding:20px 12px 80px}.hero{align-items:flex-start;flex-direction:column}.hero h1{font-size:29px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:14px;min-height:90px}.kpi-value{font-size:23px}.cards{grid-template-columns:1fr}.profile-name{display:none}.profile-role{display:none}.profile{padding:5px}}
-
-.module-screen{display:none}.module-screen.active{display:block}.module-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.back-dashboard{border:1px solid #28536b;background:#0b2131;color:#53d7fa;padding:10px 14px;border-radius:10px;font-size:12px;font-weight:800}.module-title{font-size:24px;font-weight:900}.module-sub{color:#8fb4c8;font-size:11px;margin-top:4px}.module-placeholder{background:#081a29;border:1px solid #21465d;border-radius:18px;padding:28px;min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center}.module-placeholder-inner{max-width:600px}.module-placeholder h2{margin:0 0 8px}.module-placeholder p{color:#8faabb;font-size:12px;line-height:1.6}.module-back-mobile{display:none}
-
-@media(max-width:650px){.module-header{align-items:flex-start}.back-dashboard{padding:9px 10px}.module-title{font-size:20px}.module-back-mobile{display:block}}
-
-
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06101d"><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon-192.png"><title>RELAY-3 TEAM HUB</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script><style>
 
 /* =====================================================
    BASIC
 ===================================================== */
 
-.prod-module *{
+* {
 
   box-sizing:
     border-box;
@@ -47,7 +20,7 @@
 }
 
 
-.prod-module{
+body {
 
   background:#000;
 
@@ -61,7 +34,7 @@
 }
 
 
-.prod-module .app{
+.app {
 
   width:100%;
 
@@ -72,7 +45,7 @@
 }
 
 
-.prod-module .card{
+.card {
 
   background:#07142b;
 
@@ -88,7 +61,7 @@
 }
 
 
-.prod-module .section-title{
+.section-title {
 
   color:#00ffff;
 
@@ -105,7 +78,7 @@
    TARGET PANEL
 ===================================================== */
 
-.prod-module .target-panel{
+.target-panel {
 
   background:#07142b;
 
@@ -121,7 +94,7 @@
 }
 
 
-.prod-module .top-bar{
+.top-bar {
 
   background:#0284c7;
 
@@ -140,7 +113,7 @@
 }
 
 
-.prod-module .req-box{
+.req-box {
 
   text-align:center;
 
@@ -152,7 +125,7 @@
 }
 
 
-.prod-module .req-value{
+.req-value {
 
   color:#ffff00;
 
@@ -163,7 +136,7 @@
 }
 
 
-.prod-module .req-label{
+.req-label {
 
   color:#00ffff;
 
@@ -174,7 +147,7 @@
 }
 
 
-.prod-module .kpi-grid{
+.kpi-grid {
 
   display:grid;
 
@@ -184,7 +157,7 @@
 }
 
 
-.prod-module .kpi{
+.kpi {
 
   text-align:center;
 
@@ -202,14 +175,14 @@
 }
 
 
-.prod-module .kpi:last-child{
+.kpi:last-child {
 
   border-right:none;
 
 }
 
 
-.prod-module .kpi-value{
+.kpi-value {
 
   display:block;
 
@@ -222,7 +195,7 @@
 }
 
 
-.prod-module .meta-row{
+.meta-row {
 
   display:grid;
 
@@ -243,14 +216,14 @@
 }
 
 
-.prod-module .meta-row strong{
+.meta-row strong {
 
   color:#fff;
 
 }
 
 
-.prod-module .hours-banner{
+.hours-banner {
 
   background:#db2777;
 
@@ -271,7 +244,7 @@
    FORM
 ===================================================== */
 
-.prod-module .form-row{
+.form-row {
 
   display:grid;
 
@@ -285,7 +258,7 @@
 }
 
 
-.prod-module .form-group{
+.form-group {
 
   display:flex;
 
@@ -298,7 +271,7 @@
 }
 
 
-.prod-module label{
+label {
 
   color:#00ffff;
 
@@ -309,7 +282,8 @@
 }
 
 
-.prod-module input,.prod-module select{
+input,
+select {
 
   width:100%;
 
@@ -342,7 +316,7 @@ NO NUMBER SPINNER
 =====================================================
 */
 
-.prod-module input[type="number"]{
+input[type="number"] {
 
   appearance:none;
 
@@ -354,7 +328,8 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module input[type="number"]::-webkit-inner-spin-button,.prod-module input[type="number"]::-webkit-outer-spin-button{
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
 
   -webkit-appearance:none;
 
@@ -365,7 +340,7 @@ NO NUMBER SPINNER
 
 /* SHIFT NORMAL TEXT */
 
-.prod-module #opShift{
+#opShift {
 
   text-align:center;
 
@@ -378,7 +353,7 @@ NO NUMBER SPINNER
    BUTTONS
 ===================================================== */
 
-.prod-module .btn{
+.btn {
 
   width:100%;
 
@@ -399,21 +374,21 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .btn-settings{
+.btn-settings {
 
   background:#0284c7;
 
 }
 
 
-.prod-module .btn-save{
+.btn-save {
 
   background:#10b981;
 
 }
 
 
-.prod-module .btn-refresh{
+.btn-refresh {
 
   background:#334155;
 
@@ -423,7 +398,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .btn-cancel{
+.btn-cancel {
 
   display:none;
 
@@ -436,14 +411,14 @@ NO NUMBER SPINNER
    REFRESH SPINNER
 ===================================================== */
 
-.prod-module #refreshIcon{
+#refreshIcon {
 
   display:inline-block;
 
 }
 
 
-.prod-module #refreshIcon.spinning{
+#refreshIcon.spinning {
 
   animation:
     refreshSpin .8s linear infinite;
@@ -474,7 +449,7 @@ NO NUMBER SPINNER
    PROGRESS
 ===================================================== */
 
-.prod-module .progress-wrap{
+.progress-wrap {
 
   display:none;
 
@@ -491,7 +466,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .progress-bar{
+.progress-bar {
 
   height:100%;
 
@@ -508,7 +483,7 @@ NO NUMBER SPINNER
    TABLE
 ===================================================== */
 
-.prod-module .table-wrap{
+.table-wrap {
 
   width:100%;
 
@@ -517,7 +492,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .production-table{
+.production-table {
 
   width:100%;
 
@@ -528,7 +503,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .production-table th{
+.production-table th {
 
   background:#a95f00;
 
@@ -549,7 +524,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .production-table td{
+.production-table td {
 
   background:#000;
 
@@ -572,7 +547,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .production-table .hour{
+.production-table .hour {
 
   background:#00bfff;
 
@@ -581,14 +556,14 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .production-table .yellow{
+.production-table .yellow {
 
   color:#ffff00;
 
 }
 
 
-.prod-module .production-table .cyan{
+.production-table .cyan {
 
   color:#00ffff;
 
@@ -599,7 +574,7 @@ NO NUMBER SPINNER
    ACTION BUTTONS
 ===================================================== */
 
-.prod-module .action-buttons{
+.action-buttons {
 
   display:flex;
 
@@ -610,7 +585,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .action-btn{
+.action-btn {
 
   width:32px;
 
@@ -627,28 +602,28 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .edit-btn{
+.edit-btn {
 
   background:#0284c7;
 
 }
 
 
-.prod-module .delete-btn{
+.delete-btn {
 
   background:#dc2626;
 
 }
 
 
-.prod-module .whatsapp-btn{
+.whatsapp-btn {
 
   background:#16a34a;
 
 }
 
 
-.prod-module .pdf-btn{
+.pdf-btn {
 
   background:#dc2626;
 
@@ -659,7 +634,7 @@ NO NUMBER SPINNER
    METRICS
 ===================================================== */
 
-.prod-module .metrics-grid{
+.metrics-grid {
 
   display:grid;
 
@@ -673,7 +648,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .metric-box{
+.metric-box {
 
   background:#020617;
 
@@ -689,7 +664,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .metric-label{
+.metric-label {
 
   display:block;
 
@@ -702,7 +677,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .metric-value{
+.metric-value {
 
   display:block;
 
@@ -721,7 +696,7 @@ NO NUMBER SPINNER
    GSR
 ===================================================== */
 
-.prod-module .gsr-card{
+.gsr-card {
 
   background:#020617;
 
@@ -739,7 +714,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .gsr-title{
+.gsr-title {
 
   color:#00ffff;
 
@@ -750,7 +725,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .gsr-value{
+.gsr-value {
 
   color:#ffff00;
 
@@ -767,7 +742,7 @@ NO NUMBER SPINNER
    DELETE ALL
 ===================================================== */
 
-.prod-module .delete-all{
+.delete-all {
 
   width:100%;
 
@@ -790,7 +765,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .delete-all:disabled{
+.delete-all:disabled {
 
   opacity:.6;
 
@@ -801,7 +776,7 @@ NO NUMBER SPINNER
    REPORT
 ===================================================== */
 
-.prod-module .report-grid{
+.report-grid {
 
   display:grid;
 
@@ -815,7 +790,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .report-btn{
+.report-btn {
 
   border:none;
 
@@ -832,14 +807,14 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .whatsapp-report{
+.whatsapp-report {
 
   background:#16a34a;
 
 }
 
 
-.prod-module .pdf-report{
+.pdf-report {
 
   background:#dc2626;
 
@@ -850,7 +825,7 @@ NO NUMBER SPINNER
    CUSTOM DELETE MODAL
 ===================================================== */
 
-.prod-module .modal-overlay{
+.modal-overlay {
 
   position:fixed;
 
@@ -872,7 +847,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-box{
+.modal-box {
 
   width:100%;
 
@@ -892,7 +867,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-icon{
+.modal-icon {
 
   color:#facc15;
 
@@ -903,7 +878,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-title{
+.modal-title {
 
   color:#ffff00;
 
@@ -914,7 +889,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-message{
+.modal-message {
 
   color:#fff;
 
@@ -927,7 +902,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-buttons{
+.modal-buttons {
 
   display:grid;
 
@@ -939,7 +914,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-buttons button{
+.modal-buttons button {
 
   border:none;
 
@@ -954,7 +929,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-cancel{
+.modal-cancel {
 
   background:#475569;
 
@@ -963,7 +938,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module .modal-delete{
+.modal-delete {
 
   background:#dc2626;
 
@@ -976,7 +951,7 @@ NO NUMBER SPINNER
    TOAST
 ===================================================== */
 
-.prod-module #toast{
+#toast {
 
   position:fixed;
 
@@ -1016,7 +991,7 @@ NO NUMBER SPINNER
 }
 
 
-.prod-module #toast.show{
+#toast.show {
 
   transform:
     translate(-50%,0);
@@ -1032,7 +1007,7 @@ NO NUMBER SPINNER
 
 @media(max-width:600px) {
 
-  .prod-module{
+  body {
 
     padding:
       7px 4px 30px;
@@ -1040,21 +1015,22 @@ NO NUMBER SPINNER
   }
 
 
-  .prod-module .card{
+  .card {
 
     padding:10px;
 
   }
 
 
-  .prod-module .section-title{
+  .section-title {
 
     font-size:16px;
 
   }
 
 
-  .prod-module input,.prod-module select{
+  input,
+  select {
 
     height:42px;
 
@@ -1063,14 +1039,14 @@ NO NUMBER SPINNER
   }
 
 
-  .prod-module label{
+  label {
 
     font-size:12px;
 
   }
 
 
-  .prod-module .req-value{
+  .req-value {
 
     font-size:23px;
 
@@ -1078,60 +1054,16 @@ NO NUMBER SPINNER
 
 }
 
+</style><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#030a12;color:#eef7ff}button,select,input{font:inherit}
+#hubLogin{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.hub-login-card{width:min(430px,94vw);background:#081827;border:1px solid #24506c;border-radius:28px;padding:30px;text-align:center;box-shadow:0 25px 80px #000b}.hub-login-card img{width:110px;height:110px;object-fit:contain;margin-bottom:10px}.hub-login-card h1{margin:0;font-size:27px}.hub-login-sub{color:#8fb4ca;font-size:13px;margin:8px 0 28px}.hub-login-label{display:block;text-align:left;color:#8fd7f3;font-size:11px;margin-bottom:7px}.hub-login-select{width:100%;height:52px;border-radius:13px;border:1px solid #28607e;background:#06131f;color:#fff;padding:0 14px;outline:none}.hub-continue{width:100%;height:52px;margin-top:16px;border:0;border-radius:13px;background:#1dc4e9;color:#021019;font-weight:900}.hub-connection{display:inline-block;margin-top:18px;padding:7px 12px;border-radius:20px;background:#06344a;color:#55d9ff;font-size:10px}.hub-connection.error{background:#45151b;color:#ff7c7c}
+#hubApp{min-height:100vh}.hub-layout{display:flex;min-height:100vh}.hub-sidebar{width:202px;flex-shrink:0;background:#06121e;border-right:1px solid #1b3b52;padding:16px 10px;position:fixed;left:0;top:0;bottom:0;overflow:auto;z-index:100}.hub-brand{display:flex;align-items:center;gap:8px;padding:7px 6px 15px;border-bottom:1px solid #173448;margin-bottom:10px}.hub-brand img{width:38px;height:38px;object-fit:contain}.hub-brand-title{font-weight:900;font-size:12px}.hub-brand-sub{color:#76a6bd;font-size:8px;margin-top:2px}.hub-nav{display:flex;flex-direction:column;gap:4px}.hub-nav-btn{width:100%;min-height:42px;border:0;background:transparent;color:#b9d0de;border-radius:9px;text-align:left;padding:8px 9px;display:flex;align-items:center;gap:9px;font-size:12px}.hub-nav-btn:hover{background:#0b2131}.hub-nav-btn.locked{color:#657987;background:#07141f}.hub-nav-icon{width:21px;text-align:center;font-size:15px}.hub-lock{margin-left:auto}.hub-main{margin-left:202px;min-width:0;flex:1}.hub-topbar{height:62px;background:#061421;border-bottom:1px solid #1a3a50;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:200}.hub-top-title{font-size:13px;font-weight:900}.hub-profile-menu{position:relative}.hub-profile-btn{border:1px solid #28536b;background:#0b2131;color:#c9e5f3;padding:7px 9px;border-radius:8px;font-size:10px}.hub-menu{position:absolute;right:0;top:44px;width:145px;background:#081827;border:1px solid #28536b;border-radius:10px;padding:6px;display:none;box-shadow:0 12px 35px #000b}.hub-menu.show{display:block}.hub-menu button{width:100%;border:0;background:transparent;color:#d8edf7;text-align:left;padding:9px;border-radius:7px;font-size:11px}.hub-menu button:hover{background:#0d2638}.hub-content{padding:26px 22px 50px;max-width:1400px;margin:auto}.hub-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:20px}.hub-eyebrow{color:#16c9f4;font-size:10px;font-weight:900;letter-spacing:1px}.hub-hero h1{margin:7px 0 5px;font-size:36px;line-height:1.05}.hub-date{color:#91b4c8;font-size:11px}.hub-badge{background:#073049;color:#57d8ff;border-radius:20px;padding:7px 11px;font-size:9px}.hub-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:23px}.hub-kpi{background:#081a29;border:1px solid #21465d;border-radius:17px;padding:17px;min-height:98px}.hub-kpi-label{color:#8fb6cb;font-size:9px}.hub-kpi-value{font-size:26px;font-weight:900;margin-top:8px}.hub-cyan{color:#25d0f4}.hub-yellow{color:#facc15}.hub-orange{color:#fb923c}.hub-green{color:#34d399}.hub-kpi-sub{margin-top:4px;color:#86a9bd;font-size:9px}.hub-section-title{font-size:15px;margin:0 0 11px}.hub-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.hub-card{background:#081a29;border:1px solid #1e4259;border-radius:17px;padding:17px;min-height:140px;display:flex;flex-direction:column}.hub-card.locked{opacity:.56}.hub-card-icon{font-size:21px;margin-bottom:10px}.hub-card h3{margin:0;font-size:13px}.hub-card p{color:#7896a8;font-size:9px;margin:7px 0 13px;line-height:1.5}.hub-card button{margin-top:auto;width:100%;height:39px;border-radius:9px;border:1px solid #1e506b;background:#0a2030;color:#53d7fa;font-size:10px;font-weight:800}.hub-card.locked button{color:#778994}.hub-module{display:none}.hub-module-header{display:flex;align-items:center;gap:10px;padding:12px 0 14px}.hub-back{border:1px solid #285b76;background:#0b2333;color:#55d9ff;border-radius:9px;padding:9px 12px;font-size:11px;font-weight:900}.hub-module-title{font-size:25px;font-weight:900}.hub-module-sub{color:#8fb6cb;font-size:10px;margin-top:3px}.hub-placeholder{background:#081a29;border:1px solid #24506c;border-radius:16px;padding:45px;text-align:center;color:#9bb7c7}.hub-modal{position:fixed;inset:0;z-index:99999;background:#000b;display:none;align-items:center;justify-content:center;padding:20px}.hub-modal-box{width:min(370px,94vw);background:#081827;border:1px solid #2b5870;border-radius:18px;padding:23px;text-align:center}.hub-modal-box h3{margin:0 0 8px}.hub-modal-box p{color:#9bb7c6;font-size:12px;line-height:1.6}.hub-modal-actions{display:flex;gap:9px;margin-top:17px}.hub-modal-actions button{flex:1;height:42px;border-radius:9px;font-weight:800}.hub-cancel{background:#132635;color:#b8d1de;border:1px solid #2a4c61}.hub-danger{background:#dc2626;color:#fff;border:0}.production-host{display:none;padding:0 0 25px}.production-host .app{max-width:1200px!important;width:100%}
+@media(max-width:900px){.hub-sidebar{width:180px}.hub-main{margin-left:180px}.hub-kpis{grid-template-columns:repeat(2,1fr)}.hub-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.hub-sidebar{width:100%;height:auto;top:auto;bottom:0;padding:4px;border-top:1px solid #1b3b52;border-right:0}.hub-brand{display:none}.hub-nav{flex-direction:row}.hub-nav-btn{min-height:47px;flex:1;justify-content:center;flex-direction:column;gap:1px;padding:4px 1px;font-size:7px}.hub-nav-btn:nth-child(n+5){display:none}.hub-nav-icon{font-size:15px}.hub-lock{display:none}.hub-main{margin-left:0;padding-bottom:55px}.hub-topbar{padding:0 9px}.hub-content{padding:19px 11px 75px}.hub-hero{flex-direction:column;align-items:flex-start}.hub-hero h1{font-size:28px}.hub-cards{grid-template-columns:1fr}.hub-module-title{font-size:20px}.hub-module-header{align-items:flex-start;flex-wrap:wrap}}
+</style><style>body{padding:0!important;background:#030a12!important}#hubApp .production-host .app{width:100%;max-width:1200px!important}</style></head><body><div id="hubLogin"><div class="hub-login-card"><img src="./icon-192.png" alt="RELAY-3 TEAM HUB"><h1>Welcome to RELAY-3</h1><div class="hub-login-sub">Select your name to continue</div><label class="hub-login-label" for="hubUser">OPERATOR / USER</label><select id="hubUser" class="hub-login-select"><option>Loading...</option></select><button class="hub-continue" onclick="hubLogin()">CONTINUE</button><div id="hubConnection" class="hub-connection">● CONNECTING TO R3 BACKEND</div></div></div><div id="hubApp" style="display:none"><div class="hub-layout"><aside class="hub-sidebar"><div class="hub-brand"><img src="./icon-192.png"><div><div class="hub-brand-title">RELAY-3 TEAM HUB</div><div class="hub-brand-sub">Operator & Production</div></div></div><nav class="hub-nav"><button class="hub-nav-btn" onclick="showHome()"><span class="hub-nav-icon">🏠</span><span>Home</span></button><button class="hub-nav-btn" data-module="checkPosition" onclick="openHubModule('checkPosition')"><span class="hub-nav-icon">📋</span><span>Check Position</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="myDueHistory" onclick="openHubModule('myDueHistory')"><span class="hub-nav-icon">⏳</span><span>My Due History</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="monthlyReport" onclick="openHubModule('monthlyReport')"><span class="hub-nav-icon">📊</span><span>My Monthly Report</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="leaveEntry" onclick="openHubModule('leaveEntry')"><span class="hub-nav-icon">📝</span><span>Leave Entry</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="holidayList" onclick="openHubModule('holidayList')"><span class="hub-nav-icon">🏢</span><span>Company Holiday</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="shiftSchedule" onclick="openHubModule('shiftSchedule')"><span class="hub-nav-icon">📅</span><span>Check Shift Schedule</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="localFestival" onclick="openHubModule('localFestival')"><span class="hub-nav-icon">🪔</span><span>Local Festival</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="groupChat" onclick="openHubModule('groupChat')"><span class="hub-nav-icon">💬</span><span>Live Group Chat</span><span class="hub-lock"></span></button><button class="hub-nav-btn" data-module="productionDashboard" onclick="openHubModule('productionDashboard')"><span class="hub-nav-icon">🏭</span><span>Production Dashboard</span><span class="hub-lock"></span></button></nav></aside><main class="hub-main"><header class="hub-topbar"><div class="hub-top-title">Plant Control Center</div><div class="hub-profile-menu"><button class="hub-profile-btn" onclick="toggleProfileMenu()"><span id="hubAvatar">G</span>&nbsp;<span id="hubProfileName">Guest</span> ▾</button><div class="hub-menu" id="hubMenu"><button onclick="switchHubUser()">🔄 Switch User</button><button onclick="openLogoutModal()">🚪 Logout</button></div></div></header><section id="hubHome" class="hub-content"><div class="hub-hero"><div><div class="hub-eyebrow">RELAY-3 TEAM HUB</div><h1>Good day, <span id="hubWelcome">Guest</span> 👋</h1><div class="hub-date" id="hubDate">-</div></div><div class="hub-badge">R3 connected</div></div><div class="hub-kpis"><div class="hub-kpi"><div class="hub-kpi-label">Duty Status</div><div class="hub-kpi-value hub-cyan" id="hubDuty">-</div><div class="hub-kpi-sub">Today's lineup entries</div></div><div class="hub-kpi"><div class="hub-kpi-label">Production</div><div class="hub-kpi-value hub-yellow" id="hubProduction">-</div><div class="hub-kpi-sub">Current shift</div></div><div class="hub-kpi"><div class="hub-kpi-label">Remaining</div><div class="hub-kpi-value hub-orange" id="hubRemaining">-</div><div class="hub-kpi-sub">Equivalent sheets</div></div><div class="hub-kpi"><div class="hub-kpi-label">Access</div><div class="hub-kpi-value hub-green" id="hubAccess">0</div><div class="hub-kpi-sub">Modules enabled</div></div></div><h2 class="hub-section-title">Quick Access</h2><div class="hub-cards"><div class="hub-card" data-card="checkPosition"><div class="hub-card-icon">📋</div><h3>Check Position</h3><p>Open Check Position from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('checkPosition')">Open</button></div><div class="hub-card" data-card="myDueHistory"><div class="hub-card-icon">⏳</div><h3>My Due History</h3><p>Open My Due History from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('myDueHistory')">Open</button></div><div class="hub-card" data-card="monthlyReport"><div class="hub-card-icon">📊</div><h3>My Monthly Report</h3><p>Open My Monthly Report from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('monthlyReport')">Open</button></div><div class="hub-card" data-card="leaveEntry"><div class="hub-card-icon">📝</div><h3>Leave Entry</h3><p>Open Leave Entry from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('leaveEntry')">Open</button></div><div class="hub-card" data-card="holidayList"><div class="hub-card-icon">🏢</div><h3>Company Holiday</h3><p>Open Company Holiday from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('holidayList')">Open</button></div><div class="hub-card" data-card="shiftSchedule"><div class="hub-card-icon">📅</div><h3>Check Shift Schedule</h3><p>Open Check Shift Schedule from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('shiftSchedule')">Open</button></div><div class="hub-card" data-card="localFestival"><div class="hub-card-icon">🪔</div><h3>Local Festival</h3><p>Open Local Festival from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('localFestival')">Open</button></div><div class="hub-card" data-card="groupChat"><div class="hub-card-icon">💬</div><h3>Live Group Chat</h3><p>Open Live Group Chat from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('groupChat')">Open</button></div><div class="hub-card" data-card="productionDashboard"><div class="hub-card-icon">🏭</div><h3>Production Dashboard</h3><p>Open Production Dashboard from the RELAY-3 TEAM HUB.</p><button onclick="openHubModule('productionDashboard')">Open</button></div></div></section><section id="hubOtherModule" class="hub-content hub-module"><div class="hub-module-header"><button class="hub-back" onclick="showHome()">← Main Dashboard</button><div><div class="hub-module-title" id="otherTitle">Module</div><div class="hub-module-sub">Relay-3 Team Hub</div></div></div><div class="hub-placeholder"><div style="font-size:34px" id="otherIcon">📋</div><h2>Access Enabled</h2><p id="otherMessage">This module will be connected next.</p></div></section><section id="productionHost" class="production-host"><div style="padding:12px 8px"><button class="hub-back" onclick="showHome()">← Main Dashboard</button></div>
 
-.prod-module{width:100%;max-width:none;background:transparent;color:#fff;padding:0;overflow:visible}.prod-module .app{width:100%;max-width:100%;margin:0}
 
-</style>
-</head>
-<body>
-<div id="splash"><img src="./icon-192.png" alt="RELAY-3 TEAM HUB"><h1>RELAY-3 TEAM HUB</h1><p>Loading R3 Team System...</p></div>
-<section id="loginScreen" class="hidden"><div class="login-card"><img class="login-logo" src="./icon-192.png" alt="RELAY-3 TEAM HUB"><h1>Welcome to RELAY-3</h1><div class="login-sub">Select your name to continue</div><label class="login-label" for="userSelect">OPERATOR / USER</label><select id="userSelect" class="login-select"><option>Loading...</option></select><button class="continue-btn" onclick="login()">CONTINUE</button><div id="connection" class="connection">● CONNECTING TO R3 BACKEND</div></div></section>
-<div id="app"><div class="layout">
-<aside class="sidebar"><div class="brand"><img src="./icon-192.png" alt=""><div><div class="brand-title">RELAY-3 TEAM HUB</div><div class="brand-sub">Operator & Production</div></div></div><nav class="nav">
-<button class="nav-btn" onclick="goHome()"><span class="nav-icon">🏠</span><span>Home</span></button>
-<button class="nav-btn" data-module="checkPosition" onclick="openModule('checkPosition')"><span class="nav-icon">📋</span><span>Check Position</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="myDueHistory" onclick="openModule('myDueHistory')"><span class="nav-icon">⏳</span><span>My Due History</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="monthlyReport" onclick="openModule('monthlyReport')"><span class="nav-icon">📊</span><span>My Monthly Report</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="leaveEntry" onclick="openModule('leaveEntry')"><span class="nav-icon">📝</span><span>Leave Entry</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="holidayList" onclick="openModule('holidayList')"><span class="nav-icon">🏢</span><span>Company Holiday</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="shiftSchedule" onclick="openModule('shiftSchedule')"><span class="nav-icon">📅</span><span>Check Shift Schedule</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="localFestival" onclick="openModule('localFestival')"><span class="nav-icon">🪔</span><span>Local Festival</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="groupChat" onclick="openModule('groupChat')"><span class="nav-icon">💬</span><span>Live Group Chat</span><span class="lock"></span></button>
-<button class="nav-btn" data-module="productionDashboard" onclick="openModule('productionDashboard')"><span class="nav-icon">🏭</span><span>Production Dashboard</span><span class="lock"></span></button>
-</nav></aside>
-<main class="main"><header class="topbar"><div class="top-title">Plant Control Center</div><div class="profile-wrap"><button class="profile-trigger" onclick="toggleProfileMenu()"><div class="profile"><div class="avatar" id="avatar">G</div><div><div class="profile-name" id="profileName">Guest</div><div class="profile-role">Access user</div></div><span>⌄</span></div></button><div class="profile-menu" id="profileMenu"><button onclick="switchUser()">↔ Switch User</button><button class="logout" onclick="openLogout()">⎋ Logout</button></div></div></header>
-<section class="content"><div class="hero"><div><div class="eyebrow">RELAY-3 TEAM HUB</div><h1>Good day, <span id="welcomeName">Guest</span> 👋</h1><div class="hero-date" id="todayDate">-</div></div><div class="backend-badge">R3 connected</div></div>
-<div class="kpis"><div class="kpi"><div class="kpi-label">Duty Status</div><div class="kpi-value cyan" id="dutyValue">-</div><div class="kpi-sub">Today's lineup entries</div></div><div class="kpi"><div class="kpi-label">Production</div><div class="kpi-value yellow" id="productionValue">-</div><div class="kpi-sub">Current shift</div></div><div class="kpi"><div class="kpi-label">Remaining</div><div class="kpi-value orange" id="remainingValue">-</div><div class="kpi-sub">Equivalent sheets</div></div><div class="kpi"><div class="kpi-label">Access</div><div class="kpi-value green" id="accessValue">0</div><div class="kpi-sub">Modules enabled</div></div></div>
-<h2 class="section-title">Quick Access</h2><div class="cards">
-<div class="card" data-card="checkPosition"><div class="card-icon">📋</div><h3>Check Position</h3><p>Today's R3 operator lineup and assigned positions.</p><button class="card-action" onclick="openModule('checkPosition')">Open</button></div>
-<div class="card" data-card="myDueHistory"><div class="card-icon">⏳</div><h3>My Due History</h3><p>Position-wise due history and previous duty information.</p><button class="card-action" onclick="openModule('myDueHistory')">Open</button></div>
-<div class="card" data-card="monthlyReport"><div class="card-icon">📊</div><h3>My Monthly Report</h3><p>Attendance and position performance report.</p><button class="card-action" onclick="openModule('monthlyReport')">Open</button></div>
-<div class="card" data-card="leaveEntry"><div class="card-icon">📝</div><h3>Leave Entry</h3><p>Apply leave through the existing R3 leave system.</p><button class="card-action" onclick="openModule('leaveEntry')">Open</button></div>
-<div class="card" data-card="holidayList"><div class="card-icon">🏢</div><h3>Company Holiday</h3><p>Official company holidays and relay shifts.</p><button class="card-action" onclick="openModule('holidayList')">Open</button></div>
-<div class="card" data-card="shiftSchedule"><div class="card-icon">📅</div><h3>Check Shift Schedule</h3><p>Check Relay-1, Relay-2 and Relay-3 schedule.</p><button class="card-action" onclick="openModule('shiftSchedule')">Open</button></div>
-<div class="card" data-card="localFestival"><div class="card-icon">🪔</div><h3>Local Festival</h3><p>Festival dates with relay shift information.</p><button class="card-action" onclick="openModule('localFestival')">Open</button></div>
-<div class="card" data-card="groupChat"><div class="card-icon">💬</div><h3>Live Group Chat</h3><p>Live communication with R3 operators and supervisor.</p><button class="card-action" onclick="openModule('groupChat')">Open</button></div>
-<div class="card" data-card="productionDashboard"><div class="card-icon">🏭</div><h3>Production Dashboard</h3><p>Production, ME, ROP and hourly manufacturing dashboard.</p><button class="card-action" onclick="openModule('productionDashboard')">Open</button></div>
-</div>
-
-<div id="moduleScreen" class="module-screen">
-  <div class="module-header">
-    <button class="back-dashboard" onclick="backToDashboard()">← Main Dashboard</button>
-    <div>
-      <div class="module-title" id="moduleTitle">Module</div>
-      <div class="module-sub" id="moduleSub">RELAY-3 TEAM HUB</div>
-    </div>
-  </div>
-  <div id="genericModule" class="module-placeholder">
-    <div class="module-placeholder-inner">
-      <div style="font-size:34px" id="moduleIcon">📦</div>
-      <h2 id="moduleWelcome">Module Access Enabled</h2>
-      <p id="moduleMessage">This module is ready. Its existing R3 functionality will be connected in the next integration step.</p>
-    </div>
-  </div>
-
-  <div id="productionMount" class="prod-module hidden">
-    <div class="app">
+<div class="app">
 
 
 <!-- =================================================
@@ -2052,14 +1984,26 @@ NO NUMBER SPINNER
 
 
 <div id="toast"></div>
-  </div>
-</div>
 
-</section></main></div></div>
-<div class="modal" id="infoModal"><div class="modal-box"><h3 id="modalTitle">Information</h3><p id="modalMessage"></p><div class="modal-actions"><button class="cancel" onclick="closeInfo()">CLOSE</button></div></div></div>
-<div class="modal" id="logoutModal"><div class="modal-box"><h3>Logout?</h3><p>Are you sure you want to logout from RELAY-3 TEAM HUB?</p><div class="modal-actions"><button class="cancel" onclick="closeLogout()">CANCEL</button><button class="confirm" onclick="confirmLogout()">LOGOUT</button></div></div></div>
+
+
+</section></main></div></div><div class="hub-modal" id="hubLockModal"><div class="hub-modal-box"><h3>🔒 Module Locked</h3><p id="hubLockMessage">This module is currently disabled.</p><div class="hub-modal-actions"><button class="hub-cancel" onclick="closeHubModal()">CLOSE</button></div></div></div><div class="hub-modal" id="hubLogoutModal"><div class="hub-modal-box"><h3>Logout?</h3><p>Are you sure you want to logout from RELAY-3 TEAM HUB?</p><div class="hub-modal-actions"><button class="hub-cancel" onclick="closeLogoutModal()">CANCEL</button><button class="hub-danger" onclick="confirmHubLogout()">LOGOUT</button></div></div></div><script>
+const R3_URL="https://script.google.com/macros/s/AKfycbyHQ5BMKG-IHIGMCqL4N2efVOshdsP34EY3Gu054YwmhC5qYZBNyEkRvW0_3SAOmMK8fA/exec";const HUB_KEY="relay3_team_hub_user";let r3Data=null;let permissions={};
+function r3JSONP(params={}){return new Promise((resolve,reject)=>{const cb="r3hub_"+Date.now()+"_"+Math.random().toString(36).slice(2),s=document.createElement("script"),q=new URLSearchParams({...params,callback:cb}),timer=setTimeout(()=>{cleanup();reject(new Error("R3 timeout"))},15000);window[cb]=d=>{cleanup();resolve(d)};s.onerror=()=>{cleanup();reject(new Error("R3 backend error"))};s.src=R3_URL+"?"+q.toString();document.head.appendChild(s);function cleanup(){clearTimeout(timer);delete window[cb];s.remove()}})}
+async function bootHub(){try{r3Data=await r3JSONP({action:"getDashboardData"});const names=["Guest"];(Array.isArray(r3Data.operators)?r3Data.operators:[]).forEach(op=>{const n=typeof op==="string"?op:op&&op.name;if(n&&!names.includes(n))names.push(n)});const sel=document.getElementById("hubUser");sel.innerHTML="";names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sel.appendChild(o)});const saved=localStorage.getItem(HUB_KEY);if(saved&&names.includes(saved)){sel.value=saved;showDashboard(saved)}else document.getElementById("hubLogin").style.display="flex";document.getElementById("hubConnection").textContent="● R3 BACKEND CONNECTED"}catch(e){console.error(e);document.getElementById("hubConnection").textContent="● R3 BACKEND CONNECTION ERROR";document.getElementById("hubConnection").classList.add("error");document.getElementById("hubUser").innerHTML='<option value="Guest">Guest</option>';document.getElementById("hubLogin").style.display="flex"}}
+function hubLogin(){const u=document.getElementById("hubUser").value;if(!u||u==="Loading...")return;localStorage.setItem(HUB_KEY,u);showDashboard(u)}
+function showDashboard(u){document.getElementById("hubLogin").style.display="none";document.getElementById("hubApp").style.display="block";document.getElementById("hubProfileName").textContent=u;document.getElementById("hubWelcome").textContent=u;document.getElementById("hubAvatar").textContent=u.charAt(0).toUpperCase();document.getElementById("hubDate").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});applyHubPermissions();updateHubKPIs();showHome()}
+function getActivePermissions(){const u=(localStorage.getItem(HUB_KEY)||"").trim().toLowerCase();return u==="guest"?(r3Data&&r3Data.guestSecurity)||{}:(r3Data&&r3Data.security)||{}}
+function isEnabled(v){return v===true||String(v).toLowerCase()==="yes"}
+function applyHubPermissions(){const a=getActivePermissions();permissions={checkPosition:isEnabled(a.checkPosition),myDueHistory:isEnabled(a.myDueHistory),monthlyReport:isEnabled(a.monthlyReport),leaveEntry:isEnabled(a.leaveEntry),holidayList:isEnabled(a.holidayList),shiftSchedule:isEnabled(a.shiftSchedule),localFestival:isEnabled(a.localFestival),groupChat:isEnabled(a.groupChat),productionDashboard:isEnabled(a.productionDashboard)};let count=0;Object.entries(permissions).forEach(([m,on])=>{if(on)count++;const n=document.querySelector(`.hub-nav-btn[data-module="${m}"]`),c=document.querySelector(`.hub-card[data-card="${m}"]`);if(n){n.classList.toggle("locked",!on);const l=n.querySelector(".hub-lock");if(l)l.textContent=on?"":"🔒"}if(c){c.classList.toggle("locked",!on);const b=c.querySelector("button");if(b)b.textContent=on?"Open":"🔒 Disabled"}});document.getElementById("hubAccess").textContent=count}
+function updateHubKPIs(){const rows=r3Data&&r3Data.board&&Array.isArray(r3Data.board.rows)?r3Data.board.rows:[];document.getElementById("hubDuty").textContent=rows.length||"-"}
+function showHome(){document.getElementById("hubHome").style.display="block";document.getElementById("hubOtherModule").style.display="none";document.getElementById("productionHost").style.display="none";window.scrollTo({top:0,behavior:"smooth"})}
+const moduleInfo={checkPosition:["Check Position","📋","Today's R3 operator lineup and assigned positions."],myDueHistory:["My Due History","⏳","Position-wise due history."],monthlyReport:["My Monthly Report","📊","Attendance and position performance."],leaveEntry:["Leave Entry","📝","Leave entry and submission."],holidayList:["Company Holiday","🏢","Company holidays and relay shifts."],shiftSchedule:["Check Shift Schedule","📅","Relay shift schedule."],localFestival:["Local Festival","🪔","Local festival dates and shifts."],groupChat:["Live Group Chat","💬","R3 operator group communication."],productionDashboard:["Production Dashboard","🏭","Production, ME, ROP and hourly manufacturing dashboard."]};
+function openHubModule(m){if(!permissions[m]){document.getElementById("hubLockMessage").textContent="This module is currently disabled by the Security / Guest permission settings.";document.getElementById("hubLockModal").style.display="flex";return}if(m==="productionDashboard"){document.getElementById("hubHome").style.display="none";document.getElementById("hubOtherModule").style.display="none";document.getElementById("productionHost").style.display="block";window.scrollTo({top:0,behavior:"smooth"});if(typeof window.startProductionModule==="function")window.startProductionModule();return}const x=moduleInfo[m];document.getElementById("hubHome").style.display="none";document.getElementById("productionHost").style.display="none";document.getElementById("hubOtherModule").style.display="block";document.getElementById("otherTitle").textContent=x[0];document.getElementById("otherIcon").textContent=x[1];document.getElementById("otherMessage").textContent=x[2]+" This module will be connected in the next integration step.";window.scrollTo({top:0,behavior:"smooth"})}
+function closeHubModal(){document.getElementById("hubLockModal").style.display="none"}function toggleProfileMenu(){document.getElementById("hubMenu").classList.toggle("show")}document.addEventListener("click",e=>{if(!e.target.closest(".hub-profile-menu"))document.getElementById("hubMenu").classList.remove("show")});function switchHubUser(){localStorage.removeItem(HUB_KEY);document.getElementById("hubMenu").classList.remove("show");document.getElementById("hubApp").style.display="none";document.getElementById("hubLogin").style.display="flex";document.getElementById("hubUser").value="Guest"}function openLogoutModal(){document.getElementById("hubMenu").classList.remove("show");document.getElementById("hubLogoutModal").style.display="flex"}function closeLogoutModal(){document.getElementById("hubLogoutModal").style.display="none"}function confirmHubLogout(){localStorage.removeItem(HUB_KEY);closeLogoutModal();document.getElementById("hubApp").style.display="none";document.getElementById("hubLogin").style.display="flex";document.getElementById("hubUser").value="Guest";showHome()}
+bootHub();
+</script>
 <script>
-
 
 /* =====================================================
    CONFIG
@@ -2096,7 +2040,7 @@ let pendingDeleteRow =
    JSONP
 ===================================================== */
 
-function productionJSONP(
+function jsonp(
   url,
   callbackName
 ) {
@@ -2175,7 +2119,7 @@ function loadDashboardData() {
   showLoadingState();
 
 
-  productionJSONP(
+  jsonp(
 
     SCRIPT_URL +
     "?action=getDashboardData",
@@ -3687,7 +3631,7 @@ function saveSettingsData() {
     };
 
 
-  productionJSONP(
+  jsonp(
 
     SCRIPT_URL +
 
@@ -4021,7 +3965,7 @@ function submitProductionEntry() {
   }
 
 
-  productionJSONP(
+  jsonp(
 
     url,
 
@@ -4346,7 +4290,7 @@ function performDeleteRow(
     };
 
 
-  productionJSONP(
+  jsonp(
 
     SCRIPT_URL +
 
@@ -4510,7 +4454,7 @@ function performDeleteAll() {
     };
 
 
-  productionJSONP(
+  jsonp(
 
     SCRIPT_URL +
 
@@ -5288,96 +5232,10 @@ function escapeHTML(
 }
 
 
-window.initProductionDashboard = function(){ loadDashboardData(); };
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
 
+window.startProductionModule = function() { loadDashboardData(); };
 
-</script>
-<script>
-const R3_URL="https://script.google.com/macros/s/AKfycbyHQ5BMKG-IHIGMCqL4N2efVOshdsP34EY3Gu054YwmhC5qYZBNyEkRvW0_3SAOmMK8fA/exec";
-const PRODUCTION_URL="https://asahu1902-source.github.io/visaka-production-dashboard/";
-const KEY="relay3_team_hub_user";
-let r3Data=null,permissions={};
-function jsonp(url,params={}){return new Promise((resolve,reject)=>{const cb="relay3_"+Date.now()+"_"+Math.random().toString(36).slice(2);const s=document.createElement("script");const q=new URLSearchParams({...params,callback:cb});let t=setTimeout(()=>{cleanup();reject(Error("Connection timeout"))},15000);function cleanup(){clearTimeout(t);delete window[cb];s.remove()}window[cb]=d=>{cleanup();resolve(d)};s.onerror=()=>{cleanup();reject(Error("Backend connection failed"))};s.src=url+"?"+q.toString();document.head.appendChild(s)})}
-async function start(){try{r3Data=await jsonp(R3_URL,{action:"getDashboardData"});const names=["Guest"];if(Array.isArray(r3Data.operators)){r3Data.operators.forEach(op=>{const name=typeof op==="string"?op:op&&op.name;if(name&&!names.includes(name))names.push(name)})}const select=document.getElementById("userSelect");select.innerHTML="";names.forEach(name=>{const o=document.createElement("option");o.value=name;o.textContent=name;select.appendChild(o)});const saved=localStorage.getItem(KEY);if(saved&&names.includes(saved)){select.value=saved;setTimeout(()=>showDashboard(saved),450)}else{setTimeout(()=>{document.getElementById("splash").classList.add("hidden");document.getElementById("loginScreen").classList.remove("hidden")},550)}document.getElementById("connection").textContent="● R3 BACKEND CONNECTED";}catch(e){console.error(e);document.getElementById("connection").textContent="● R3 BACKEND CONNECTION ERROR";document.getElementById("connection").classList.add("error");document.getElementById("userSelect").innerHTML='<option value="Guest">Guest</option>';setTimeout(()=>{document.getElementById("splash").classList.add("hidden");document.getElementById("loginScreen").classList.remove("hidden")},550)}}
-function login(){const user=document.getElementById("userSelect").value;if(!user)return;localStorage.setItem(KEY,user);showDashboard(user)}
-function showDashboard(user){document.getElementById("splash").classList.add("hidden");document.getElementById("loginScreen").classList.add("hidden");document.getElementById("app").style.display="block";document.getElementById("profileName").textContent=user;document.getElementById("welcomeName").textContent=user;document.getElementById("avatar").textContent=user.charAt(0).toUpperCase();document.getElementById("todayDate").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});applyPermissions();updateDashboardKPIs()}
-function getActiveSecurity(){if(!r3Data)return{};const user=(localStorage.getItem(KEY)||"").trim();return user.toLowerCase()==="guest"?(r3Data.guestSecurity||{}):(r3Data.security||{})}
-function applyPermissions(){const active=getActiveSecurity();permissions={checkPosition:active.checkPosition===true,myDueHistory:active.myDueHistory===true,monthlyReport:active.monthlyReport===true,leaveEntry:active.leaveEntry===true,holidayList:active.holidayList===true,shiftSchedule:active.shiftSchedule===true,localFestival:active.localFestival===true,groupChat:active.groupChat===true,productionDashboard:active.productionDashboard===true};let enabled=0;Object.keys(permissions).forEach(module=>{if(permissions[module])enabled++;const nav=document.querySelector('.nav-btn[data-module="'+module+'"]');const card=document.querySelector('.card[data-card="'+module+'"]');if(nav){nav.classList.toggle("locked",!permissions[module]);const lock=nav.querySelector(".lock");if(lock)lock.textContent=permissions[module]?"":"🔒"}if(card){card.classList.toggle("locked-card",!permissions[module]);const action=card.querySelector(".card-action");if(action)action.textContent=permissions[module]?"Open":"🔒 Disabled"}});document.getElementById("accessValue").textContent=enabled}
-function openModule(module){
-  if(permissions[module]!==true){
-    showInfo("🔒 Module Locked","This section is currently disabled in the Security / Guest Google Sheet. Change it to Yes to enable access.");
-    return;
-  }
-  const modules={
-    checkPosition:{title:"Check Position",icon:"📋",sub:"Today's R3 operator lineup and assigned positions."},
-    myDueHistory:{title:"My Due History",icon:"⏳",sub:"Position-wise due history and previous duty information."},
-    monthlyReport:{title:"My Monthly Report",icon:"📊",sub:"Attendance and position performance report."},
-    leaveEntry:{title:"Leave Entry",icon:"📝",sub:"Apply leave through the existing R3 leave system."},
-    holidayList:{title:"Company Holiday",icon:"🏢",sub:"Official company holidays and relay shifts."},
-    shiftSchedule:{title:"Check Shift Schedule",icon:"📅",sub:"Check Relay-1, Relay-2 and Relay-3 schedule."},
-    localFestival:{title:"Local Festival",icon:"🪔",sub:"Festival dates with relay shift information."},
-    groupChat:{title:"Live Group Chat",icon:"💬",sub:"Live communication with R3 operators and supervisor."},
-    productionDashboard:{title:"Production Dashboard",icon:"🏭",sub:"Production, ME, ROP and hourly manufacturing dashboard."}
-  };
-  const item=modules[module];
-  if(!item)return;
-  const dashboardContent = document.querySelector(".content");
-  const moduleScreen = document.getElementById("moduleScreen");
-
-  // Move the module screen outside the dashboard content before hiding it.
-  // Otherwise the module screen would also become hidden because it is a child of .content.
-  document.querySelector(".main").appendChild(moduleScreen);
-  dashboardContent.classList.add("hidden");
-  moduleScreen.classList.add("active");
-  document.getElementById("moduleTitle").textContent=item.title;
-  document.getElementById("moduleSub").textContent=item.sub;
-  document.getElementById("moduleIcon").textContent=item.icon;
-
-  const genericModule = document.getElementById("genericModule");
-  const productionMount = document.getElementById("productionMount");
-
-  if(module === "productionDashboard"){
-    genericModule.classList.add("hidden");
-    productionMount.classList.remove("hidden");
-    document.getElementById("moduleTitle").textContent = "Production Dashboard";
-    document.getElementById("moduleSub").textContent = "Live production, ME, ROP and hourly manufacturing dashboard.";
-    if(typeof window.initProductionDashboard === "function") window.initProductionDashboard();
-  }else{
-    productionMount.classList.add("hidden");
-    genericModule.classList.remove("hidden");
-    document.getElementById("moduleWelcome").textContent="✓ Access Enabled";
-    document.getElementById("moduleMessage").textContent=
-      item.title+" is enabled. Its existing R3 functionality will be connected in the next module step.";
-  }
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function backToDashboard(){
-  const moduleScreen = document.getElementById("moduleScreen");
-  const dashboardContent = document.querySelector(".content");
-
-  moduleScreen.classList.remove("active");
-  document.getElementById("productionMount").classList.add("hidden");
-  document.getElementById("genericModule").classList.remove("hidden");
-
-  // Put the module screen back after the dashboard content for the next module.
-  dashboardContent.parentNode.insertBefore(moduleScreen, dashboardContent.nextSibling);
-  dashboardContent.classList.remove("hidden");
-
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-function updateDashboardKPIs(){const board=r3Data&&r3Data.board?r3Data.board:{};const rows=Array.isArray(board.rows)?board.rows:[];document.getElementById("dutyValue").textContent=rows.length?rows.length:"-";document.getElementById("productionValue").textContent="-";document.getElementById("remainingValue").textContent="-"}
-function toggleProfileMenu(){const m=document.getElementById("profileMenu");m.style.display=m.style.display==="block"?"none":"block"}
-document.addEventListener("click",e=>{if(!e.target.closest(".profile-wrap"))document.getElementById("profileMenu").style.display="none"})
-function switchUser(){document.getElementById("profileMenu").style.display="none";localStorage.removeItem(KEY);document.getElementById("app").style.display="none";document.getElementById("loginScreen").classList.remove("hidden");document.getElementById("userSelect").value="Guest"}
-function openLogout(){document.getElementById("profileMenu").style.display="none";document.getElementById("logoutModal").style.display="flex"}
-function closeLogout(){document.getElementById("logoutModal").style.display="none"}
-function confirmLogout(){localStorage.removeItem(KEY);closeLogout();document.getElementById("app").style.display="none";document.getElementById("loginScreen").classList.remove("hidden");document.getElementById("userSelect").value="Guest"}
-function showInfo(title,message){document.getElementById("modalTitle").textContent=title;document.getElementById("modalMessage").textContent=message;document.getElementById("infoModal").style.display="flex"}
-function closeInfo(){document.getElementById("infoModal").style.display="none"}
-function goHome(){if(document.getElementById("moduleScreen").classList.contains("active")){backToDashboard();return}window.scrollTo({top:0,behavior:"smooth"})}
-start();
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=3").catch(()=>{}))}
-</script>
-</body>
-</html>
+</script></body></html>
