@@ -20,6 +20,10 @@
 .modal{position:fixed;inset:0;z-index:99999;background:#000b;display:none;align-items:center;justify-content:center;padding:20px}.modal-box{width:min(380px,94vw);background:#081827;border:1px solid #2b5870;border-radius:18px;padding:24px;text-align:center}.modal-box h3{margin:0 0 8px}.modal-box p{color:#9bb7c6;font-size:12px;line-height:1.6}.modal-actions{display:flex;gap:10px;margin-top:18px}.modal-actions button{flex:1;height:42px;border-radius:9px;font-weight:800}.cancel{background:#132635;color:#b8d1de;border:1px solid #2a4c61}.confirm{background:#dc2626;color:#fff;border:0}
 @media(max-width:900px){.sidebar{width:190px}.kpis{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:650px){.layout{display:block}.sidebar{width:100%;height:auto;position:fixed;bottom:0;left:0;right:0;z-index:100;padding:5px;border-right:0;border-top:1px solid #1b3b52}.brand{display:none}.nav{flex-direction:row;justify-content:space-around;gap:2px}.nav-btn{min-height:48px;width:auto;flex:1;padding:5px 2px;justify-content:center;flex-direction:column;gap:1px;text-align:center;font-size:8px}.nav-btn:nth-child(n+5){display:none}.nav-icon{font-size:16px}.lock{display:none}.topbar{padding:0 10px}.top-title{font-size:12px}.content{padding:20px 12px 80px}.hero{align-items:flex-start;flex-direction:column}.hero h1{font-size:29px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:14px;min-height:90px}.kpi-value{font-size:23px}.cards{grid-template-columns:1fr}.profile-name{display:none}.profile-role{display:none}.profile{padding:5px}}
+
+.module-screen{display:none}.module-screen.active{display:block}.module-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}.back-dashboard{border:1px solid #28536b;background:#0b2131;color:#53d7fa;padding:10px 14px;border-radius:10px;font-size:12px;font-weight:800}.module-title{font-size:24px;font-weight:900}.module-sub{color:#8fb4c8;font-size:11px;margin-top:4px}.module-placeholder{background:#081a29;border:1px solid #21465d;border-radius:18px;padding:28px;min-height:220px;display:flex;align-items:center;justify-content:center;text-align:center}.module-placeholder-inner{max-width:600px}.module-placeholder h2{margin:0 0 8px}.module-placeholder p{color:#8faabb;font-size:12px;line-height:1.6}.module-back-mobile{display:none}
+
+@media(max-width:650px){.module-header{align-items:flex-start}.back-dashboard{padding:9px 10px}.module-title{font-size:20px}.module-back-mobile{display:block}}
 </style>
 </head>
 <body>
@@ -51,7 +55,26 @@
 <div class="card" data-card="localFestival"><div class="card-icon">🪔</div><h3>Local Festival</h3><p>Festival dates with relay shift information.</p><button class="card-action" onclick="openModule('localFestival')">Open</button></div>
 <div class="card" data-card="groupChat"><div class="card-icon">💬</div><h3>Live Group Chat</h3><p>Live communication with R3 operators and supervisor.</p><button class="card-action" onclick="openModule('groupChat')">Open</button></div>
 <div class="card" data-card="productionDashboard"><div class="card-icon">🏭</div><h3>Production Dashboard</h3><p>Production, ME, ROP and hourly manufacturing dashboard.</p><button class="card-action" onclick="openModule('productionDashboard')">Open</button></div>
-</div></section></main></div></div>
+</div>
+
+<div id="moduleScreen" class="module-screen">
+  <div class="module-header">
+    <button class="back-dashboard" onclick="backToDashboard()">← Main Dashboard</button>
+    <div>
+      <div class="module-title" id="moduleTitle">Module</div>
+      <div class="module-sub" id="moduleSub">RELAY-3 TEAM HUB</div>
+    </div>
+  </div>
+  <div class="module-placeholder">
+    <div class="module-placeholder-inner">
+      <div style="font-size:34px" id="moduleIcon">📦</div>
+      <h2 id="moduleWelcome">Module Access Enabled</h2>
+      <p id="moduleMessage">This module is ready. Its existing R3 functionality will be connected here in the next integration step.</p>
+    </div>
+  </div>
+</div>
+
+</section></main></div></div>
 <div class="modal" id="infoModal"><div class="modal-box"><h3 id="modalTitle">Information</h3><p id="modalMessage"></p><div class="modal-actions"><button class="cancel" onclick="closeInfo()">CLOSE</button></div></div></div>
 <div class="modal" id="logoutModal"><div class="modal-box"><h3>Logout?</h3><p>Are you sure you want to logout from RELAY-3 TEAM HUB?</p><div class="modal-actions"><button class="cancel" onclick="closeLogout()">CANCEL</button><button class="confirm" onclick="confirmLogout()">LOGOUT</button></div></div></div>
 <script>
@@ -65,7 +88,40 @@ function login(){const user=document.getElementById("userSelect").value;if(!user
 function showDashboard(user){document.getElementById("splash").classList.add("hidden");document.getElementById("loginScreen").classList.add("hidden");document.getElementById("app").style.display="block";document.getElementById("profileName").textContent=user;document.getElementById("welcomeName").textContent=user;document.getElementById("avatar").textContent=user.charAt(0).toUpperCase();document.getElementById("todayDate").textContent=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"2-digit",month:"long",year:"numeric"});applyPermissions();updateDashboardKPIs()}
 function getActiveSecurity(){if(!r3Data)return{};const user=(localStorage.getItem(KEY)||"").trim();return user.toLowerCase()==="guest"?(r3Data.guestSecurity||{}):(r3Data.security||{})}
 function applyPermissions(){const active=getActiveSecurity();permissions={checkPosition:active.checkPosition===true,myDueHistory:active.myDueHistory===true,monthlyReport:active.monthlyReport===true,leaveEntry:active.leaveEntry===true,holidayList:active.holidayList===true,shiftSchedule:active.shiftSchedule===true,localFestival:active.localFestival===true,groupChat:active.groupChat===true,productionDashboard:active.productionDashboard===true};let enabled=0;Object.keys(permissions).forEach(module=>{if(permissions[module])enabled++;const nav=document.querySelector('.nav-btn[data-module="'+module+'"]');const card=document.querySelector('.card[data-card="'+module+'"]');if(nav){nav.classList.toggle("locked",!permissions[module]);const lock=nav.querySelector(".lock");if(lock)lock.textContent=permissions[module]?"":"🔒"}if(card){card.classList.toggle("locked-card",!permissions[module]);const action=card.querySelector(".card-action");if(action)action.textContent=permissions[module]?"Open":"🔒 Disabled"}});document.getElementById("accessValue").textContent=enabled}
-function openModule(module){if(permissions[module]!==true){showInfo("🔒 Module Locked","This section is currently disabled in the Security / Guest Google Sheet. Change it to Yes to enable access.");return}if(module==="productionDashboard"){window.location.href=PRODUCTION_URL;return}const names={checkPosition:"Check Position",myDueHistory:"My Due History",monthlyReport:"My Monthly Report",leaveEntry:"Leave Entry",holidayList:"Company Holiday",shiftSchedule:"Check Shift Schedule",localFestival:"Local Festival",groupChat:"Live Group Chat"};showInfo("✓ Access Enabled",names[module]+" permission is enabled. The existing R3 module will be connected inside Team Hub in the next integration step.")}
+function openModule(module){
+  if(permissions[module]!==true){
+    showInfo("🔒 Module Locked","This section is currently disabled in the Security / Guest Google Sheet. Change it to Yes to enable access.");
+    return;
+  }
+  const modules={
+    checkPosition:{title:"Check Position",icon:"📋",sub:"Today's R3 operator lineup and assigned positions."},
+    myDueHistory:{title:"My Due History",icon:"⏳",sub:"Position-wise due history and previous duty information."},
+    monthlyReport:{title:"My Monthly Report",icon:"📊",sub:"Attendance and position performance report."},
+    leaveEntry:{title:"Leave Entry",icon:"📝",sub:"Apply leave through the existing R3 leave system."},
+    holidayList:{title:"Company Holiday",icon:"🏢",sub:"Official company holidays and relay shifts."},
+    shiftSchedule:{title:"Check Shift Schedule",icon:"📅",sub:"Check Relay-1, Relay-2 and Relay-3 schedule."},
+    localFestival:{title:"Local Festival",icon:"🪔",sub:"Festival dates with relay shift information."},
+    groupChat:{title:"Live Group Chat",icon:"💬",sub:"Live communication with R3 operators and supervisor."},
+    productionDashboard:{title:"Production Dashboard",icon:"🏭",sub:"Production, ME, ROP and hourly manufacturing dashboard."}
+  };
+  const item=modules[module];
+  if(!item)return;
+  document.querySelector(".content").classList.add("hidden");
+  document.getElementById("moduleScreen").classList.add("active");
+  document.getElementById("moduleTitle").textContent=item.title;
+  document.getElementById("moduleSub").textContent=item.sub;
+  document.getElementById("moduleIcon").textContent=item.icon;
+  document.getElementById("moduleWelcome").textContent="✓ Access Enabled";
+  document.getElementById("moduleMessage").textContent=
+    item.title+" is open inside RELAY-3 TEAM HUB. The existing module functionality will be connected here in the next integration step.";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function backToDashboard(){
+  document.getElementById("moduleScreen").classList.remove("active");
+  document.querySelector(".content").classList.remove("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function updateDashboardKPIs(){const board=r3Data&&r3Data.board?r3Data.board:{};const rows=Array.isArray(board.rows)?board.rows:[];document.getElementById("dutyValue").textContent=rows.length?rows.length:"-";document.getElementById("productionValue").textContent="-";document.getElementById("remainingValue").textContent="-"}
 function toggleProfileMenu(){const m=document.getElementById("profileMenu");m.style.display=m.style.display==="block"?"none":"block"}
 document.addEventListener("click",e=>{if(!e.target.closest(".profile-wrap"))document.getElementById("profileMenu").style.display="none"})
@@ -75,7 +131,7 @@ function closeLogout(){document.getElementById("logoutModal").style.display="non
 function confirmLogout(){localStorage.removeItem(KEY);closeLogout();document.getElementById("app").style.display="none";document.getElementById("loginScreen").classList.remove("hidden");document.getElementById("userSelect").value="Guest"}
 function showInfo(title,message){document.getElementById("modalTitle").textContent=title;document.getElementById("modalMessage").textContent=message;document.getElementById("infoModal").style.display="flex"}
 function closeInfo(){document.getElementById("infoModal").style.display="none"}
-function goHome(){window.scrollTo({top:0,behavior:"smooth"})}
+function goHome(){if(document.getElementById("moduleScreen").classList.contains("active")){backToDashboard();return}window.scrollTo({top:0,behavior:"smooth"})}
 start();
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=3").catch(()=>{}))}
 </script>
